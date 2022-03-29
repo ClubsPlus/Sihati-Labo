@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/schedules"
+        android:title="Schedules"
+        android:icon="@drawable/schedule"/>
+
+    <item
+        android:id="@+id/pendingTests"
+        android:title="Pending"
+        android:icon="@drawable/waiting"/>
+
+    <item
+        android:id="@+id/testHistory"
+        android:title="Schedules"
+        android:icon="@drawable/history"/>
+
+</menu>
