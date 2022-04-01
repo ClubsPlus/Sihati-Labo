@@ -68,4 +68,10 @@ dependencies {
 
     //mavigation bar
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
+
+    //calander
+    implementation 'com.github.shrikanth7698:Collapsible-Calendar-View-Android:v1.0.3'
+
+    //card
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
 }

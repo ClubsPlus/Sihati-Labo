@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/schedules"
         android:title="Schedules"
-        android:icon="@drawable/schedule"/>
+        android:icon="@drawable/schedule"
+        app:cnb_iconColor="@color/green"/>
 
     <item
         android:id="@+id/pendingTests"
         android:title="Pending"
-        android:icon="@drawable/waiting"/>
+        android:icon="@drawable/waiting"
+        app:cnb_iconColor="@color/green"/>
 
     <item
         android:id="@+id/testHistory"
         android:title="Schedules"
-        android:icon="@drawable/history"/>
+        android:icon="@drawable/history"
+        app:cnb_iconColor="@color/green"/>
 
 </menu>
