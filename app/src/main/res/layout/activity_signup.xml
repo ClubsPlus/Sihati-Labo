@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authPages.signupActivity"
+    tools:context=".authPages.SignupActivity"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -19,7 +19,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="masli"/>
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,7 +35,7 @@
             android:id="@+id/number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0668431900"/>
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +51,7 @@
             android:id="@+id/adress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tlemcen"/>
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="masli@gmail.com"/>
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="kadoure38"/>
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

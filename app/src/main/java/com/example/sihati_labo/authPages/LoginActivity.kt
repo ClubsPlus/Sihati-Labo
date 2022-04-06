@@ -83,10 +83,11 @@ class LoginActivity : AppCompatActivity() {
         try {
             var succes = 0
             val querySnapshot = laboratoryCollectionRef.get().await()
-            querySnapshot.documents.forEach{
-                if(it.id==uid){
+            for(document in querySnapshot.documents){
+                if(document.id==uid){
                     succes = 1
                     updateUI(user)
+                    break
                 }
             }
             if(succes==0){
