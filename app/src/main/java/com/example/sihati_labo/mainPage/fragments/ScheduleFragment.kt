@@ -1,14 +1,16 @@
 package com.example.sihati_labo.mainPage.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.sihati_labo.R
-import com.ramotion.foldingcell.FoldingCell
+import androidx.fragment.app.Fragment
+import com.example.sihati_labo.databinding.FragmentScheduleBinding
+
 
 class ScheduleFragment : Fragment() {
+
+    private lateinit var binding: FragmentScheduleBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,10 +21,18 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false)
+        binding = FragmentScheduleBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        binding.fab.setOnClickListener {
+//            AuthUI.getInstance()
+//                .signOut(this)
+//                .addOnCompleteListener {
+//                    // ...
+//                }
+//        }
     }
 }

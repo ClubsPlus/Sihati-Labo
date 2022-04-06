@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "763926368803",
+    "firebase_url": "https://sihati-82368-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sihati-82368",
+    "storage_bucket": "sihati-82368.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763926368803:android:a358a6fe2ba15d0269d796",
+        "android_client_info": {
+          "package_name": "com.Sihati"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763926368803-elb0p9ueu9q0qs1c8h6i6v27qk34icbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP_MRvWTHtu0U2XAxnQ3phYG4mkfvnxvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763926368803-elb0p9ueu9q0qs1c8h6i6v27qk34icbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763926368803:android:14b9a375ace4b93e69d796",
+        "android_client_info": {
+          "package_name": "com.example.sihati_labo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763926368803-elb0p9ueu9q0qs1c8h6i6v27qk34icbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP_MRvWTHtu0U2XAxnQ3phYG4mkfvnxvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763926368803-elb0p9ueu9q0qs1c8h6i6v27qk34icbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
