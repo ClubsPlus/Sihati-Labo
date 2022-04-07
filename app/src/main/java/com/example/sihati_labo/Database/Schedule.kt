@@ -1,6 +1,7 @@
 package com.example.sihati_labo.Database
 
 data class Schedule (
+    var id:String? = "",
     var date:String? = "",
     var laboratory_id:String? = "",
     var limite:Int?=-1,

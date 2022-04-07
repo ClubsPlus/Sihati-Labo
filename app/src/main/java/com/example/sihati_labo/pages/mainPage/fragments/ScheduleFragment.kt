@@ -15,6 +15,7 @@ import com.example.sihati_labo.R
 import com.example.sihati_labo.adapters.ScheduleAdapter
 import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.databinding.FragmentScheduleBinding
+import com.example.sihati_labo.pages.scheduleDetails.ScheduleDetailsActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -83,6 +84,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
                 val schedules  = mutableListOf<Schedule>()
                 for (document in it){
                     val schedule = document.toObject<Schedule>()
+                    schedule.id = document.id
                     schedules.add(schedule)
                 }
                 adapter.updateList(schedules)
@@ -90,7 +92,16 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         }
     }
 
-    override fun onClick(task: Schedule) {
+    override fun onClick(schedule: Schedule) {
+        val intent = Intent(requireActivity(),ScheduleDetailsActivity::class.java)
+        intent.putExtra("id",schedule.id)
+        intent.putExtra("date",schedule.date)
+        intent.putExtra("laboratory_id",schedule.laboratory_id)
+        intent.putExtra("limite",schedule.limite.toString())
+        intent.putExtra("person",schedule.person.toString())
+        intent.putExtra("time_Start",schedule.time_Start)
+        intent.putExtra("time_end",schedule.time_end)
+        requireActivity().startActivity(intent)
 
     }
 }
