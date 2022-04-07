@@ -5,5 +5,6 @@ data class Schedule (
     var laboratory_id:String,
     var limite:Int,
     var time_Start:String,
-    var time_end:String
+    var time_end:String,
+    var person:Int?=0
 )
