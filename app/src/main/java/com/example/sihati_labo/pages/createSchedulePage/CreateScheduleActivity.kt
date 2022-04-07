@@ -1,4 +1,4 @@
-package com.example.sihati_labo.createSchedulePage
+package com.example.sihati_labo.pages.createSchedulePage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -50,11 +50,11 @@ class CreateScheduleActivity : AppCompatActivity() {
                 startTime = getsTime(binding.startTime)
                 endTime = getsTime(binding.endTime)
                 val user = auth.currentUser!!
-                saveSchedule(Schedule(date
-                    ,user.uid
-                    ,binding.max.text.toString().toInt()
-                    ,getsTime(binding.startTime)
-                    ,getsTime(binding.endTime)))
+                saveSchedule(Schedule(date=date
+                    ,laboratory_id=user.uid
+                    ,limite=binding.max.text.toString().toInt()
+                    ,time_Start=getsTime(binding.startTime)
+                    ,time_end=getsTime(binding.endTime)))
                 finish()
             }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()
         }

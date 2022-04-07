@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".scheduleDetails.ScheduleDetailsActivity">
+    tools:context=".pages.scheduleDetails.ScheduleDetailsActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

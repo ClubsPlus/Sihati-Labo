@@ -1,4 +1,4 @@
-package com.example.sihati_labo.scheduleDetails
+package com.example.sihati_labo.pages.scheduleDetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

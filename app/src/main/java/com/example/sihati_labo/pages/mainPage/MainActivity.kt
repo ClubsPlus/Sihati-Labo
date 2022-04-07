@@ -1,12 +1,12 @@
-package com.example.sihati_labo.mainPage
+package com.example.sihati_labo.pages.mainPage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.sihati_labo.R
-import com.example.sihati_labo.mainPage.fragments.PendingTestsFragment
-import com.example.sihati_labo.mainPage.fragments.ScheduleFragment
-import com.example.sihati_labo.mainPage.fragments.TestHistoryFragment
+import com.example.sihati_labo.pages.mainPage.fragments.PendingTestsFragment
+import com.example.sihati_labo.pages.mainPage.fragments.ScheduleFragment
+import com.example.sihati_labo.pages.mainPage.fragments.TestHistoryFragment
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 
 class MainActivity : AppCompatActivity() {
