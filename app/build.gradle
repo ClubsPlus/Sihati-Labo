@@ -88,4 +88,8 @@ dependencies {
 
     //card
     implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
+
+    //style
+    implementation 'com.airbnb.android:paris:2.0.0'
+
 }

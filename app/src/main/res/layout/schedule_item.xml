@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/schedule"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -126,8 +127,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:progress="60"
-            android:progressTint="@color/green" />
-
-
+            android:progressTint="@color/colorPrimary" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
