@@ -21,17 +21,22 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.shrikanthravi.collapsiblecalendarview.data.Day
+import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
 
     private lateinit var binding: FragmentScheduleBinding
     private lateinit var currentUserRef: Query
+    private lateinit var scheduleAdapter:  ScheduleAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentScheduleBinding.inflate(inflater,container,false)
         return binding.root
@@ -54,28 +59,30 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
             currentUserRef = Firebase.firestore.collection("Schedule").whereEqualTo("laboratory_id",id)
         }
 
-        recyclerViewSetup()
-
-
+        val currentDate= LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = currentDate.format(formatter)
+        recyclerViewSetup(date)
+        setupCalendar(binding.calander)
     }
 
-    private fun recyclerViewSetup(){
+    private fun recyclerViewSetup(date: String) {
         // on below line we are setting layout
         // manager to our recycler view.
         binding.recyclerview.layoutManager = LinearLayoutManager(activity)
         // on below line we are initializing our adapter class.
-        val scheduleAdapter = ScheduleAdapter(requireActivity(), this)
+        scheduleAdapter = ScheduleAdapter(requireActivity(), this)
 
         // on below line we are setting
         // adapter to our recycler view.
         binding.recyclerview.adapter = scheduleAdapter
         binding.recyclerview.setHasFixedSize(true)
 
-        subscribeToRealtimeUpdates(scheduleAdapter)
+        subscribeToRealtimeUpdates(date)
     }
 
-    private fun subscribeToRealtimeUpdates(adapter: ScheduleAdapter){
-        currentUserRef.addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
+    private fun subscribeToRealtimeUpdates(date:String){
+        currentUserRef.whereEqualTo("date",date).addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
             firebaseFirestoreException?.let{
                 Toast.makeText(requireActivity(),it.message,Toast.LENGTH_LONG).show()
                 return@addSnapshotListener
@@ -87,9 +94,52 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
                     schedule.id = document.id
                     schedules.add(schedule)
                 }
-                adapter.updateList(schedules)
+                scheduleAdapter.updateList(schedules)
             }
         }
+    }
+
+    private fun setupCalendar(collapsibleCalendar: CollapsibleCalendar){
+        collapsibleCalendar.setCalendarListener(object : CollapsibleCalendar.CalendarListener {
+            override fun onDayChanged() {
+
+            }
+
+            override fun onClickListener() {
+                if(collapsibleCalendar.expanded){
+                    collapsibleCalendar.collapse(400)
+                }
+                else{
+                    collapsibleCalendar.expand(400)
+                }
+            }
+
+            override fun onDaySelect() {
+                val day: Day = collapsibleCalendar.selectedDay!!
+
+                val thistoday = if(day.day<10) "0"+(day.day).toString() else day.day.toString()
+                val thismonth= if(day.month + 1<10) "0"+(day.month+1).toString() else (day.month + 1).toString()
+                val date = thistoday+"/"+thismonth+"/"+day.year
+
+                subscribeToRealtimeUpdates(date)
+            }
+
+            override fun onItemClick(v: View) {
+
+            }
+
+            override fun onDataUpdate() {
+
+            }
+
+            override fun onMonthChange() {
+
+            }
+
+            override fun onWeekChange(position: Int) {
+
+            }
+        })
     }
 
     override fun onClick(schedule: Schedule) {
@@ -102,6 +152,6 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         intent.putExtra("time_Start",schedule.time_Start)
         intent.putExtra("time_end",schedule.time_end)
         requireActivity().startActivity(intent)
-
     }
+
 }
