@@ -1,9 +1,13 @@
 package com.example.sihati_labo.pages.mainPage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.sihati_client.viewModels.AuthViewModel
 import com.example.sihati_labo.R
+import com.example.sihati_labo.pages.authPages.LoginActivity
 import com.example.sihati_labo.pages.mainPage.fragments.PendingTestsFragment
 import com.example.sihati_labo.pages.mainPage.fragments.ScheduleFragment
 import com.example.sihati_labo.pages.mainPage.fragments.TestHistoryFragment
@@ -17,6 +21,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val viewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+        )[AuthViewModel::class.java]
+
+        viewModel.userData.observe(this) { firebaseUser ->
+            if (firebaseUser == null) {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+        }
 
         /*setup the bottomNavigationView*/
         val bottomNavigationView = findViewById<ChipNavigationBar>(R.id.bottomNavigationView)

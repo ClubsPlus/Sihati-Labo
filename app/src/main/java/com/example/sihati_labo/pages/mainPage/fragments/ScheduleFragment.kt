@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,14 +46,13 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*setup the fab*/
         //change the fab icon color
         val myFabSrc = resources.getDrawable(R.drawable.add)
         myFabSrc.mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY)
         binding.fab.setImageDrawable(myFabSrc)
+        binding.fab.setOnClickListener { startActivity(Intent(requireActivity(), CreateScheduleActivity::class.java)) }
 
-        binding.fab.setOnClickListener {
-            startActivity(Intent(requireActivity(), CreateScheduleActivity::class.java))
-        }
         val user = Firebase.auth.currentUser
         user?.let{
             val id = it.uid
@@ -82,9 +82,11 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
     }
 
     private fun subscribeToRealtimeUpdates(date:String){
-        currentUserRef.whereEqualTo("date",date).addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
+        currentUserRef.whereEqualTo("date",date).orderBy("time_Start",Query.Direction.ASCENDING)
+            .addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
             firebaseFirestoreException?.let{
                 Toast.makeText(requireActivity(),it.message,Toast.LENGTH_LONG).show()
+                Log.d("test",it.message.toString())
                 return@addSnapshotListener
             }
             querySnapshot?.let{
