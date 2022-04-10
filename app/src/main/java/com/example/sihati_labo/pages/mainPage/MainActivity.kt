@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.sihati_client.viewModels.AuthViewModel
+import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.R
 import com.example.sihati_labo.pages.authPages.LoginActivity
 import com.example.sihati_labo.pages.mainPage.fragments.PendingTestsFragment

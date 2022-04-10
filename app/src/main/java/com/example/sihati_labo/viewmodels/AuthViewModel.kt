@@ -1,4 +1,4 @@
-package com.example.sihati_client.viewModels
+package com.example.sihati_labo.viewmodels
 
 import android.app.Activity
 import android.app.Application

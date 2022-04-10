@@ -23,7 +23,7 @@ class AuthenticationRepository(private val application: Application) {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private var firestore = FirebaseFirestore.getInstance()
-    var laboratoryCollectionRef = firestore.collection("Laboratory")
+    private var laboratoryCollectionRef = firestore.collection("Laboratory")
 
     fun register(email: String?, pass: String?,adresse: String,name: String,number: String,activity: Activity) {
         auth.createUserWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->

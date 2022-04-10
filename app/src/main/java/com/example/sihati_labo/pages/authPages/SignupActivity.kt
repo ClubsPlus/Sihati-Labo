@@ -2,27 +2,13 @@ package com.example.sihati_labo.pages.authPages
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.sihati_client.viewModels.AuthViewModel
-import com.example.sihati_labo.Database.Laboratory
+import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.R
 import com.example.sihati_labo.databinding.ActivitySignupBinding
 import com.example.sihati_labo.pages.mainPage.MainActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 
 class SignupActivity : AppCompatActivity() {

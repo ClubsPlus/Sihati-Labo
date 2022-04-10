@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import com.example.sihati_client.viewModels.AuthViewModel
+import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.R
 import com.firebase.ui.auth.AuthUI
 

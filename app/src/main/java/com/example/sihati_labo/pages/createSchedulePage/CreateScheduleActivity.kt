@@ -1,14 +1,16 @@
 package com.example.sihati_labo.pages.createSchedulePage
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.R
 import com.example.sihati_labo.databinding.ActivityCreateScheduleBinding
+import com.example.sihati_labo.viewmodels.AuthViewModel
+import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -24,8 +26,6 @@ import kotlinx.coroutines.withContext
 class CreateScheduleActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateScheduleBinding
-    private val laboratoryCollectionRef = Firebase.firestore.collection("Schedule")
-    private lateinit var auth: FirebaseAuth;
 
     private lateinit var date: String
     private lateinit var startTime: String
@@ -38,7 +38,10 @@ class CreateScheduleActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
-        auth = Firebase.auth
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val viewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+        )[ScheduleViewModel::class.java]
 
         binding.rollback.setOnClickListener { finish() }
         setCalendar(binding.calander)
@@ -49,12 +52,11 @@ class CreateScheduleActivity : AppCompatActivity() {
                 &&binding.max.text.toString().isNotEmpty()){
                 startTime = getsTime(binding.startTime)
                 endTime = getsTime(binding.endTime)
-                val user = auth.currentUser!!
-                saveSchedule(Schedule(date=date
-                    ,laboratory_id=user.uid
+                viewModel.saveSchedule(Schedule(date=date
+                    ,laboratory_id=viewModel.auth.uid
                     ,limite=binding.max.text.toString().toInt()
                     ,time_Start=getsTime(binding.startTime)
-                    ,time_end=getsTime(binding.endTime)))
+                    ,time_end=getsTime(binding.endTime)),this)
                 finish()
             }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()
         }
@@ -108,18 +110,4 @@ class CreateScheduleActivity : AppCompatActivity() {
         val hour= if(timePicker.hour<10) "0"+timePicker.hour.toString() else timePicker.hour.toString()
         return hour+":"+minute
     }
-
-    private fun saveSchedule(schedule: Schedule) = CoroutineScope(Dispatchers.IO).launch{
-        try{
-            laboratoryCollectionRef.add(schedule).await()
-            withContext(Dispatchers.Main){
-                Toast.makeText(this@CreateScheduleActivity,"successfully saved data",Toast.LENGTH_LONG).show()
-            }
-        }catch (e: Exception){
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@CreateScheduleActivity, e.message, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
 }
