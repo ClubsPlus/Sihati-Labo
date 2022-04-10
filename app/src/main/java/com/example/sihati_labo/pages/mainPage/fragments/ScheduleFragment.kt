@@ -4,23 +4,22 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.R
 import com.example.sihati_labo.adapters.ScheduleAdapter
-import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.databinding.FragmentScheduleBinding
+import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.pages.scheduleDetails.ScheduleDetailsActivity
+import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
@@ -31,8 +30,8 @@ import java.time.format.DateTimeFormatter
 class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
 
     private lateinit var binding: FragmentScheduleBinding
-    private lateinit var currentUserRef: Query
     private lateinit var scheduleAdapter:  ScheduleAdapter
+    private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +45,11 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // setup the viewModel
+         viewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[ScheduleViewModel::class.java]
+
         /*setup the fab*/
         //change the fab icon color
         val myFabSrc = resources.getDrawable(R.drawable.add)
@@ -53,11 +57,6 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         binding.fab.setImageDrawable(myFabSrc)
         binding.fab.setOnClickListener { startActivity(Intent(requireActivity(), CreateScheduleActivity::class.java)) }
 
-        val user = Firebase.auth.currentUser
-        user?.let{
-            val id = it.uid
-            currentUserRef = Firebase.firestore.collection("Schedule").whereEqualTo("laboratory_id",id)
-        }
 
         val currentDate= LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -78,27 +77,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         binding.recyclerview.adapter = scheduleAdapter
         binding.recyclerview.setHasFixedSize(true)
 
-        subscribeToRealtimeUpdates(date)
-    }
-
-    private fun subscribeToRealtimeUpdates(date:String){
-        currentUserRef.whereEqualTo("date",date).orderBy("time_Start",Query.Direction.ASCENDING)
-            .addSnapshotListener{ querySnapshot, firebaseFirestoreException ->
-            firebaseFirestoreException?.let{
-                Toast.makeText(requireActivity(),it.message,Toast.LENGTH_LONG).show()
-                Log.d("test",it.message.toString())
-                return@addSnapshotListener
-            }
-            querySnapshot?.let{
-                val schedules  = mutableListOf<Schedule>()
-                for (document in it){
-                    val schedule = document.toObject<Schedule>()
-                    schedule.id = document.id
-                    schedules.add(schedule)
-                }
-                scheduleAdapter.updateList(schedules)
-            }
-        }
+        viewModel.subscribeToRealtimeUpdates(date,requireActivity(),scheduleAdapter)
     }
 
     private fun setupCalendar(collapsibleCalendar: CollapsibleCalendar){
@@ -123,7 +102,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
                 val thismonth= if(day.month + 1<10) "0"+(day.month+1).toString() else (day.month + 1).toString()
                 val date = thistoday+"/"+thismonth+"/"+day.year
 
-                subscribeToRealtimeUpdates(date)
+                viewModel.subscribeToRealtimeUpdates(date,requireActivity(),scheduleAdapter)
             }
 
             override fun onItemClick(v: View) {
