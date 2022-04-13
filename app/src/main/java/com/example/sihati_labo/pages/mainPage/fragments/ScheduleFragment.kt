@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,15 +18,8 @@ import com.example.sihati_labo.databinding.FragmentScheduleBinding
 import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.pages.scheduleDetails.ScheduleDetailsActivity
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 
 class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
 
@@ -49,6 +43,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
          viewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[ScheduleViewModel::class.java]
+        viewModel.init()
 
         /*setup the fab*/
         //change the fab icon color
@@ -57,15 +52,11 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         binding.fab.setImageDrawable(myFabSrc)
         binding.fab.setOnClickListener { startActivity(Intent(requireActivity(), CreateScheduleActivity::class.java)) }
 
-
-        val currentDate= LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val date = currentDate.format(formatter)
-        recyclerViewSetup(date)
+        recyclerViewSetup()
         setupCalendar(binding.calander)
     }
 
-    private fun recyclerViewSetup(date: String) {
+    private fun recyclerViewSetup() {
         // on below line we are setting layout
         // manager to our recycler view.
         binding.recyclerview.layoutManager = LinearLayoutManager(activity)
@@ -77,7 +68,14 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         binding.recyclerview.adapter = scheduleAdapter
         binding.recyclerview.setHasFixedSize(true)
 
-        viewModel.subscribeToRealtimeUpdates(date,requireActivity(),scheduleAdapter)
+        viewModel.schedules?.observe(requireActivity()){ list ->
+            Log.d("test","I'm in the observe calender")
+            Log.d("test", list?.size.toString())
+            list?.let {
+                // on below line we are updating our list.
+                scheduleAdapter.updateList(it)
+            }
+        }
     }
 
     private fun setupCalendar(collapsibleCalendar: CollapsibleCalendar){
@@ -101,8 +99,15 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
                 val thistoday = if(day.day<10) "0"+(day.day).toString() else day.day.toString()
                 val thismonth= if(day.month + 1<10) "0"+(day.month+1).toString() else (day.month + 1).toString()
                 val date = thistoday+"/"+thismonth+"/"+day.year
-
-                viewModel.subscribeToRealtimeUpdates(date,requireActivity(),scheduleAdapter)
+                viewModel.updateScheduleWithDate(date)
+                viewModel.schedules?.observe(requireActivity()){ list ->
+                    Log.d("test","I'm in the observe calender")
+                    Log.d("test", list?.size.toString())
+                    list?.let {
+                        // on below line we are updating our list.
+                        scheduleAdapter.updateList(it)
+                    }
+                }
             }
 
             override fun onItemClick(v: View) {

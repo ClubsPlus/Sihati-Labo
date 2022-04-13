@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.sihati_client.repositories.AuthenticationRepository
+import com.example.sihati_labo.repositories.AuthenticationRepository
 import com.google.firebase.auth.FirebaseUser
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {

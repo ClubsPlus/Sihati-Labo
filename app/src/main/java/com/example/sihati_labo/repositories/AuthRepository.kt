@@ -1,4 +1,4 @@
-package com.example.sihati_client.repositories
+package com.example.sihati_labo.repositories
 
 import android.app.Activity
 import android.app.Application
