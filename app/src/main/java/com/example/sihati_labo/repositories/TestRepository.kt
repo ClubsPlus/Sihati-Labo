@@ -28,6 +28,8 @@ class TestRepository {
         db.collection("Schedule").whereEqualTo("date",date)
             .orderBy("time_Start", Query.Direction.ASCENDING)
             .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
+                tests.value = emptyList()
+                list.clear()
                 firebaseFirestoreException?.let{
                     Log.d("exeptions","error: "+it.message.toString())
                     return@addSnapshotListener

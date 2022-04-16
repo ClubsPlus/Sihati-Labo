@@ -17,7 +17,6 @@ class TestViewModel : ViewModel() {
     fun updateScheduleWithDate(date:String){
         Log.d("test","I'm in the updateScheduleWithDate viewmodel")
         tests?.value = emptyList()
-        mRepository.tests.value = emptyList()
         Log.d("test","after cleaning the list in the viewmodel size="+ tests?.value!!.size.toString())
         mRepository.getTestsWithDate(date)
     }
