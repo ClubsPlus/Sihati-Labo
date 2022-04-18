@@ -5,6 +5,7 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.example.sihati_labo.Database.Laboratory
 import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.adapters.ScheduleAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -55,9 +56,7 @@ class ScheduleRepository {
                     for(document in it){
                         list.add(document.toObject())
                     }
-                    Log.d("test","after cleaning the list in the repository size="+ schedules?.value?.size.toString())
                     schedules.value = list
-                    Log.d("test","I'm done with seting the schedule in the repository ")
                 }
             }
     }

@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.style
 import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.R
+import com.example.sihati_labo.viewmodels.ScheduleViewModel
 
 
 class ScheduleAdapter(
     val context: Context,
     private val taskClickInterface: TaskClickInterface?=null,
+    private val viewModel: ScheduleViewModel
 ) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>(){
 
     // on below line we are creating a

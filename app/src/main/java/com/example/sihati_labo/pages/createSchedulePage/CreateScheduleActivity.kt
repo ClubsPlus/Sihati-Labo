@@ -52,12 +52,14 @@ class CreateScheduleActivity : AppCompatActivity() {
                 &&binding.max.text.toString().isNotEmpty()){
                 startTime = getsTime(binding.startTime)
                 endTime = getsTime(binding.endTime)
-                viewModel.saveSchedule(Schedule(date=date
-                    ,laboratory_id=viewModel.auth.uid
-                    ,limite=binding.max.text.toString().toInt()
-                    ,time_Start=getsTime(binding.startTime)
-                    ,time_end=getsTime(binding.endTime)),this)
-                finish()
+                if(checkTime(startTime,endTime)){
+                    viewModel.saveSchedule(Schedule(date=date
+                        ,laboratory_id=viewModel.auth.uid
+                        ,limite=binding.max.text.toString().toInt()
+                        ,time_Start=getsTime(binding.startTime)
+                        ,time_end=getsTime(binding.endTime)),this)
+                    finish()
+                }else Toast.makeText(this,"please set the end time after the start time",Toast.LENGTH_SHORT).show()
             }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()
         }
     }
@@ -109,5 +111,9 @@ class CreateScheduleActivity : AppCompatActivity() {
         val minute = if(timePicker.minute<10) "0"+timePicker.minute.toString() else timePicker.minute.toString()
         val hour= if(timePicker.hour<10) "0"+timePicker.hour.toString() else timePicker.hour.toString()
         return hour+":"+minute
+    }
+
+    private fun checkTime(startTime: String , endTime: String):Boolean{
+        return startTime<endTime
     }
 }

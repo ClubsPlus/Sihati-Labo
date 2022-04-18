@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +60,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         // manager to our recycler view.
         binding.recyclerview.layoutManager = LinearLayoutManager(activity)
         // on below line we are initializing our adapter class.
-        scheduleAdapter = ScheduleAdapter(requireActivity(), this)
+        scheduleAdapter = ScheduleAdapter(requireActivity(), this,viewModel)
 
         // on below line we are setting
         // adapter to our recycler view.
@@ -69,8 +68,6 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         binding.recyclerview.setHasFixedSize(true)
 
         viewModel.schedules?.observe(requireActivity()){ list ->
-            Log.d("test","I'm in the observe calender")
-            Log.d("test", list?.size.toString())
             list?.let {
                 // on below line we are updating our list.
                 scheduleAdapter.updateList(it)
@@ -101,8 +98,6 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
                 val date = thistoday+"/"+thismonth+"/"+day.year
                 viewModel.updateScheduleWithDate(date)
                 viewModel.schedules?.observe(requireActivity()){ list ->
-                    Log.d("test","I'm in the observe calender")
-                    Log.d("test", list?.size.toString())
                     list?.let {
                         // on below line we are updating our list.
                         scheduleAdapter.updateList(it)

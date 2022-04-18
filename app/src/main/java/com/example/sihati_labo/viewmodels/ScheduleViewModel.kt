@@ -1,15 +1,11 @@
 package com.example.sihati_labo.viewmodels
 
 import android.app.Activity
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sihati_labo.Database.Schedule
-import com.example.sihati_labo.adapters.ScheduleAdapter
 import com.example.sihati_labo.repositories.ScheduleRepository
-import com.google.firebase.firestore.FirebaseFirestore
 
 class ScheduleViewModel : ViewModel() {
 
