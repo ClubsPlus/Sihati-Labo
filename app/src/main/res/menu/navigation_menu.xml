@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/testHistory"
-        android:title="Schedules"
+        android:title="History"
         android:icon="@drawable/history"
         app:cnb_iconColor="@color/green"/>
 

@@ -1,6 +1,6 @@
 package com.example.sihati_labo.viewmodels
 
-import android.util.Log
+import android.app.Activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sihati_labo.Database.Test
@@ -8,16 +8,19 @@ import com.example.sihati_labo.repositories.TestRepository
 
 class TestViewModel : ViewModel() {
     private val mRepository = TestRepository()
-    var tests: MutableLiveData<List<Test>>? = null
+    var testsReady: MutableLiveData<List<Test>>? = null
+    var pendingTests: MutableLiveData<List<Test>>? = null
 
     fun init() {
-        tests = mRepository.tests
+        testsReady = mRepository.testsReady
+        pendingTests = mRepository.pendingTests
     }
 
-    fun updateScheduleWithDate(date:String){
-        Log.d("test","I'm in the updateScheduleWithDate viewmodel")
-        tests?.value = emptyList()
-        Log.d("test","after cleaning the list in the viewmodel size="+ tests?.value!!.size.toString())
+    fun getTestsWithDate(date:String){
         mRepository.getTestsWithDate(date)
+    }
+
+    fun createTest(test: Test, activity: Activity){
+        mRepository.createTest(test,activity)
     }
 }
