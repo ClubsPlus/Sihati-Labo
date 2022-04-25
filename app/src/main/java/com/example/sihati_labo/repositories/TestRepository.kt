@@ -67,7 +67,6 @@ class TestRepository {
         }
         ref?.addSnapshotListener { snapshot, firebaseFirestoreException ->
             list.clear()
-            pendingTests.value = emptyList()
             firebaseFirestoreException?.let {
                 Log.d("exeptions", "error: " + it.message.toString())
                 return@addSnapshotListener

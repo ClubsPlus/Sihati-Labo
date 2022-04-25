@@ -67,7 +67,6 @@ class PendingTestsFragment : Fragment() {
                 // on below line we are updating our list.
                 testAdapter.updateList(it)
             }
-
         }
     }
 }
