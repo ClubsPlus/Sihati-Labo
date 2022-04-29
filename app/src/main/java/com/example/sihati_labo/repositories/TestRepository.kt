@@ -24,6 +24,7 @@ class TestRepository {
     var testCollectionRef = firestore.collection("Test")
 
     var tests: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
+    var testsWithId: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
     var testsReady: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
     var pendingTests: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
 
@@ -81,9 +82,8 @@ class TestRepository {
     }
 
     fun getTestsWithDate(date: String) {
-        val db = FirebaseFirestore.getInstance()
         val list = ArrayList<Test>()
-        db.collection("Schedule").whereEqualTo("date", date)
+        testCollectionRef.whereEqualTo("date", date)
             .orderBy("time_Start", Query.Direction.ASCENDING)
             .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
                 tests.value = emptyList()
@@ -99,6 +99,27 @@ class TestRepository {
                             list.add(document.toObject())
                     }
                     tests.value = list
+                }
+            }
+    }
+
+    fun getTestsWithScheduleId(id: String) {
+        val list = ArrayList<Test>()
+        testCollectionRef.whereEqualTo("schedule_id", id)
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
+                testsWithId.value = emptyList()
+                list.clear()
+                firebaseFirestoreException?.let {
+                    Log.d("exeptions", "error: " + it.message.toString())
+                    return@addSnapshotListener
+                }
+                snapshot?.let {
+                    testsWithId.value = emptyList()
+                    for (document in it) {
+                        list.add(document.toObject())
+                    }
+                    testsWithId.value = list
+                    Log.d("test",testsWithId.value?.size.toString())
                 }
             }
     }

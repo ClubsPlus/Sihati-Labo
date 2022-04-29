@@ -47,7 +47,8 @@ class TestAdapter(
         when(allTests[position].result){
             "Positive" -> Glide.with(context).load(R.drawable.logo_red).into(holder.result)
             "Negative" -> Glide.with(context).load(R.drawable.logo_green).into(holder.result)
-            "Pending" -> Glide.with(context).load(R.drawable.logo_grey).into(holder.result)
+            "Pending" -> Glide.with(context).load(R.drawable.logo_yellow).into(holder.result)
+            "Not Tested" -> Glide.with(context).load(R.drawable.logo_grey).into(holder.result)
         }
     }
 

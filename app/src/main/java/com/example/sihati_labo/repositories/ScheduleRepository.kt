@@ -55,7 +55,9 @@ class ScheduleRepository {
                 }
                 snapshot?.let{
                     for(document in it){
-                        list.add(document.toObject())
+                        val thisSchedule :Schedule= document.toObject()
+                        thisSchedule.id = document.id
+                        list.add(thisSchedule)
                     }
                     schedules.value = list
                 }

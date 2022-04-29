@@ -10,6 +10,7 @@ class TestViewModel : ViewModel() {
     private val mRepository = TestRepository()
     var testsReady: MutableLiveData<List<Test>>? = null
     var pendingTests: MutableLiveData<List<Test>>? = null
+    var testsWithId: MutableLiveData<List<Test>>? = null
 
     fun init() {
         testsReady = mRepository.testsReady
@@ -18,6 +19,11 @@ class TestViewModel : ViewModel() {
 
     fun getTestsWithDate(date:String){
         mRepository.getTestsWithDate(date)
+    }
+
+    fun getTestsWithScheduleId(id:String){
+        mRepository.getTestsWithScheduleId(id)
+        testsWithId = mRepository.testsWithId
     }
 
     fun createTest(test: Test, activity: Activity){

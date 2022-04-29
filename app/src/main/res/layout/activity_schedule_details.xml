@@ -13,49 +13,72 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/info"
-        android:layout_width="408dp"
-        android:layout_height="181dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="@drawable/blue_background"
         android:gravity="center"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/date"
+        <ImageView
+            android:id="@+id/rollback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginTop="20dp"
+            android:src="@drawable/rollback"
+            android:layout_gravity="start"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:text="Mercredi 05/04"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:layout_marginHorizontal="70dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="08:00 - 09:00"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textSize="20sp"
+            android:layout_marginVertical="10dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/date"
+            app:layout_constraintBottom_toTopOf="@+id/person"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/person"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
             android:text="Il reste 20 patient a tester"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-    </LinearLayout>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/bottons"
@@ -65,8 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal"
-        android:layout_marginVertical="10dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
