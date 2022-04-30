@@ -6,10 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Test
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.MetadataChanges
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -105,7 +102,9 @@ class TestRepository {
 
     fun getTestsWithScheduleId(id: String) {
         val list = ArrayList<Test>()
-        testCollectionRef.whereEqualTo("schedule_id", id)
+        testCollectionRef
+            .whereEqualTo("schedule_id", id)
+            .whereEqualTo("result","Not Tested")
             .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
                 testsWithId.value = emptyList()
                 list.clear()
@@ -134,6 +133,30 @@ class TestRepository {
             withContext(Dispatchers.Main) {
                 Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    fun updateTest(test: Test, newTest: Test) = CoroutineScope(Dispatchers.IO).launch {
+        val scheduleQuery = testCollectionRef
+            .whereEqualTo("laboratory_id",test.laboratory_id)
+            .whereEqualTo("result",test.result)
+            .whereEqualTo("schedule_id",test.schedule_id)
+            .whereEqualTo("user_id",test.user_id)
+            .get()
+            .await()
+        if(scheduleQuery.documents.isNotEmpty()){
+            for(document in scheduleQuery){
+                try {
+                    testCollectionRef.document(document.id).set(
+                        newTest,
+                        SetOptions.merge()
+                    ).await()
+                }catch (e:Exception){
+                    Log.d("exeptions","error: "+e.message.toString())
+                }
+            }
+        }else{
+            Log.d("exeptions","error: the retrieving query is empty")
         }
     }
 }

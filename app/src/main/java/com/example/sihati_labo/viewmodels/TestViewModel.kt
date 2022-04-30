@@ -3,6 +3,7 @@ package com.example.sihati_labo.viewmodels
 import android.app.Activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.repositories.TestRepository
 
@@ -28,5 +29,9 @@ class TestViewModel : ViewModel() {
 
     fun createTest(test: Test, activity: Activity){
         mRepository.createTest(test,activity)
+    }
+
+    fun updateTest(test: Test, newTest: Test){
+        mRepository.updateTest(test,newTest)
     }
 }

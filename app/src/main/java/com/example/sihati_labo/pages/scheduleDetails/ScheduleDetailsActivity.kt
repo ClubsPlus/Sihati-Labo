@@ -6,20 +6,21 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.R
-import com.example.sihati_labo.adapters.TestAdapter
+import com.example.sihati_labo.adapters.NotTestedAdapter
 import com.example.sihati_labo.databinding.ActivityScheduleDetailsBinding
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
 
 
 
-class ScheduleDetailsActivity : AppCompatActivity() {
+class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClickInterface {
 
     private lateinit var binding: ActivityScheduleDetailsBinding
     private lateinit var testViewModel: TestViewModel
     private lateinit var scheduleViewModel:  ScheduleViewModel
-    private lateinit var testAdapter:  TestAdapter
+    private lateinit var notTestedAdapter: NotTestedAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,19 +67,25 @@ class ScheduleDetailsActivity : AppCompatActivity() {
         // manager to our recycler view.
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         // on below line we are initializing our adapter class.
-        testAdapter = TestAdapter(this,scheduleViewModel)
+        notTestedAdapter = NotTestedAdapter(this,scheduleViewModel,this)
 
         // on below line we are setting
         // adapter to our recycler view.
-        binding.recyclerView.adapter = testAdapter
+        binding.recyclerView.adapter = notTestedAdapter
         binding.recyclerView.setHasFixedSize(true)
 
         testViewModel.getTestsWithScheduleId(id)
         testViewModel.testsWithId?.observe(this){ list ->
             list?.let {
                 // on below line we are updating our list.
-                testAdapter.updateList(it)
+                notTestedAdapter.updateList(it)
             }
         }
+    }
+
+    override fun onClick(test: Test) {
+        val oldTest = Test(test.laboratory_id,test.result,test.user_id,test.schedule_id)
+        val newTest = Test(test.laboratory_id,"Pending",test.user_id,test.schedule_id)
+        testViewModel.updateTest(oldTest,newTest)
     }
 }
