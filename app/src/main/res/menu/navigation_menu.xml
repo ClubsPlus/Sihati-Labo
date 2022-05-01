@@ -6,18 +6,18 @@
         android:id="@+id/schedules"
         android:title="Schedules"
         android:icon="@drawable/schedule"
-        app:cnb_iconColor="@color/green"/>
+        app:cnb_iconColor="@color/beige"/>
 
     <item
         android:id="@+id/pendingTests"
         android:title="Pending"
         android:icon="@drawable/waiting"
-        app:cnb_iconColor="@color/green"/>
+        app:cnb_iconColor="@color/beige"/>
 
     <item
         android:id="@+id/testHistory"
         android:title="History"
         android:icon="@drawable/history"
-        app:cnb_iconColor="@color/green"/>
+        app:cnb_iconColor="@color/beige"/>
 
 </menu>
