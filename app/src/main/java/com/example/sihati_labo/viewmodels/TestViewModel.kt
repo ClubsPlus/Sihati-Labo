@@ -34,4 +34,8 @@ class TestViewModel : ViewModel() {
     fun updateTest(test: Test, newTest: Test){
         mRepository.updateTest(test,newTest)
     }
+
+    fun updateUser(uid: String, result: String){
+        mRepository.updateUser(uid,result)
+    }
 }

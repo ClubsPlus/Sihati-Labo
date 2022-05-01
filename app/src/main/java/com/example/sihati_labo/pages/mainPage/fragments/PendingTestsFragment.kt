@@ -84,6 +84,7 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
             val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
             val newTest = Test(test.date_end,test.laboratory_id,"Positive",test.user_id,test.schedule_id)
             testViewModel.updateTest(oldTest,newTest)
+            testViewModel.updateUser(test.user_id!!,"Positive")
             dialog_set_result.dismiss()
         }
 
@@ -91,6 +92,7 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
             val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
             val newTest = Test(test.date_end,test.laboratory_id,"Negative",test.user_id,test.schedule_id)
             testViewModel.updateTest(oldTest,newTest)
+            testViewModel.updateUser(test.user_id!!,"Negative")
             dialog_set_result.dismiss()
         }
 

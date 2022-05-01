@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Test
+import com.example.sihati_labo.Database.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
@@ -19,6 +20,7 @@ class TestRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     var testCollectionRef = firestore.collection("Test")
+    var userCollectionRef = firestore.collection("User")
 
     var tests: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
     var testsWithId: MutableLiveData<List<Test>> = MutableLiveData<List<Test>>()
@@ -155,6 +157,26 @@ class TestRepository {
                     Log.d("exeptions","error: "+e.message.toString())
                 }
             }
+        }else{
+            Log.d("exeptions","error: the retrieving query is empty")
+        }
+    }
+
+    fun updateUser(uid: String, result: String) = CoroutineScope(Dispatchers.IO).launch {
+        val userQuery = userCollectionRef.document(uid).get().await()
+        if(userQuery!=null){
+            try {
+                userCollectionRef.document(uid).set(
+                    User(userQuery.toObject<User>()!!.id,
+                        userQuery.toObject<User>()!!.name,
+                        userQuery.toObject<User>()!!.number,
+                        result),
+                    SetOptions.merge()
+                ).await()
+            }catch (e:Exception){
+                Log.d("exeptions","error: "+e.message.toString())
+            }
+
         }else{
             Log.d("exeptions","error: the retrieving query is empty")
         }
