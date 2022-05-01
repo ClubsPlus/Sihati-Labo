@@ -81,15 +81,15 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
         val negative = dialog_set_result.findViewById<AppCompatButton>(R.id.negative)
 
         positive.setOnClickListener {
-            val oldTest = Test(test.laboratory_id,test.result,test.user_id,test.schedule_id)
-            val newTest = Test(test.laboratory_id,"Positive",test.user_id,test.schedule_id)
+            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
+            val newTest = Test(test.date_end,test.laboratory_id,"Positive",test.user_id,test.schedule_id)
             testViewModel.updateTest(oldTest,newTest)
             dialog_set_result.dismiss()
         }
 
         negative.setOnClickListener {
-            val oldTest = Test(test.laboratory_id,test.result,test.user_id,test.schedule_id)
-            val newTest = Test(test.laboratory_id,"Negative",test.user_id,test.schedule_id)
+            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
+            val newTest = Test(test.date_end,test.laboratory_id,"Negative",test.user_id,test.schedule_id)
             testViewModel.updateTest(oldTest,newTest)
             dialog_set_result.dismiss()
         }

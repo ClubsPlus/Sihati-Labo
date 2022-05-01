@@ -12,7 +12,9 @@ import com.example.sihati_labo.adapters.NotTestedAdapter
 import com.example.sihati_labo.databinding.ActivityScheduleDetailsBinding
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
-
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClickInterface {
@@ -84,8 +86,21 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
     }
 
     override fun onClick(test: Test) {
-        val oldTest = Test(test.laboratory_id,test.result,test.user_id,test.schedule_id)
-        val newTest = Test(test.laboratory_id,"Pending",test.user_id,test.schedule_id)
+        val oldTest = Test(laboratory_id=test.laboratory_id,
+            result=test.result,
+            user_id=test.user_id,
+            schedule_id=test.schedule_id)
+
+        val finishDate= LocalDateTime.now().plusDays(7)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = finishDate.format(formatter)
+
+        val newTest = Test(date_end=date,
+            laboratory_id=test.laboratory_id,
+            result = "Pending",
+            user_id=test.user_id,
+            schedule_id=test.schedule_id)
+
         testViewModel.updateTest(oldTest,newTest)
     }
 }
