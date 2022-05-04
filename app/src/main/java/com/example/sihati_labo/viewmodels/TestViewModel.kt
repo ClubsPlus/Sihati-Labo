@@ -27,10 +27,6 @@ class TestViewModel : ViewModel() {
         testsWithId = mRepository.testsWithId
     }
 
-    fun createTest(test: Test, activity: Activity){
-        mRepository.createTest(test,activity)
-    }
-
     fun updateTest(test: Test, newTest: Test){
         mRepository.updateTest(test,newTest)
     }

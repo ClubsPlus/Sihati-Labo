@@ -3,14 +3,18 @@ package com.example.sihati_labo.repositories
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Laboratory
+import com.example.sihati_labo.Database.User
 import com.example.sihati_labo.pages.authPages.LoginActivity
 import com.example.sihati_labo.pages.mainPage.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.MetadataChanges
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +28,35 @@ class AuthenticationRepository(private val application: Application) {
 
     private var firestore = FirebaseFirestore.getInstance()
     private var laboratoryCollectionRef = firestore.collection("Laboratory")
+
+    private var userCollectionRef = firestore.collection("User")
+    var users: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
+
+    init {
+        if (auth.currentUser != null) {
+            firebaseUserMutableLiveData.postValue(auth.currentUser)
+        }
+        getUsers()
+    }
+
+    fun getUsers(){
+        val list  = ArrayList<User>()
+        userCollectionRef
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
+                users.value = emptyList()
+                list.clear()
+                firebaseFirestoreException?.let{
+                    Log.d("exeptions","error: "+it.message.toString())
+                    return@addSnapshotListener
+                }
+                snapshot?.let{
+                    for(document in it){
+                        list.add(document.toObject())
+                    }
+                    users.value = list
+                }
+            }
+    }
 
     fun register(email: String?, pass: String?,adresse: String,name: String,number: String,activity: Activity) {
         auth.createUserWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->
@@ -93,9 +126,19 @@ class AuthenticationRepository(private val application: Application) {
         requireActivity.startActivity(Intent(requireActivity,loginActivity::class.java))
     }
 
-    init {
-        if (auth.currentUser != null) {
-            firebaseUserMutableLiveData.postValue(auth.currentUser)
+    fun getTokenWithID(id:String): String{
+        var token = ""
+        userCollectionRef.document(id).get()
+            .addOnSuccessListener { document ->
+            if (document != null) {
+                token = document.toObject<User>()!!.token.toString()
+            } else {
+                Log.d("exeptions", "No such document")
+            }
         }
+        .addOnFailureListener { exception ->
+            Log.d("exeptions", "get failed with ", exception)
+        }
+        return token
     }
 }

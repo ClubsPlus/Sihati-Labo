@@ -44,7 +44,7 @@ class SignupActivity : AppCompatActivity() {
                 &&binding.adress.text.toString().isNotEmpty()
                 &&binding.email.text.toString().isNotEmpty()
                 &&binding.password.text.toString().isNotEmpty()){
-                viewModel.register(binding.email.text.toString(),
+                viewModel.register(binding.email.text.toString().trim(),
                     binding.password.text.toString(),
                     binding.adress.text.toString(),
                     binding.name.text.toString(),

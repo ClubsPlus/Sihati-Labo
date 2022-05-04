@@ -125,19 +125,6 @@ class TestRepository {
             }
     }
 
-    fun createTest(test: Test, activity: Activity) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            testCollectionRef.add(test).await()
-            withContext(Dispatchers.Main) {
-                Toast.makeText(activity, "successfully saved data", Toast.LENGTH_LONG).show()
-            }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     fun updateTest(test: Test, newTest: Test) = CoroutineScope(Dispatchers.IO).launch {
         val scheduleQuery = testCollectionRef
             .whereEqualTo("laboratory_id",test.laboratory_id)
@@ -170,7 +157,8 @@ class TestRepository {
                     User(userQuery.toObject<User>()!!.id,
                         userQuery.toObject<User>()!!.name,
                         userQuery.toObject<User>()!!.number,
-                        result),
+                        result,
+                        userQuery.toObject<User>()!!.token),
                     SetOptions.merge()
                 ).await()
             }catch (e:Exception){

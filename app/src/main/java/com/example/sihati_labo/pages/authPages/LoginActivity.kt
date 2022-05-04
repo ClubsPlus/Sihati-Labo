@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
         binding.login.setOnClickListener {
             if(binding.email.text.toString().isNotEmpty()
                 &&binding.password.text.toString().isNotEmpty()){
-                viewModel.signIn(binding.email.text.toString(),binding.password.text.toString(),this)
+                viewModel.signIn(binding.email.text.toString().trim(),binding.password.text.toString(),this)
             }else Toast.makeText(this,"please fill your email and password",Toast.LENGTH_LONG).show()
         }
     }

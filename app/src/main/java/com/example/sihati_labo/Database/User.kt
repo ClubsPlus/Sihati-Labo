@@ -4,5 +4,6 @@ data class User (
     var id: String? = "",
     var name: String? = "",
     var number: String? = "",
-    var status: String? = "Not Tested"
+    var status: String? = "Not Tested",
+    var token: String? = ""
 )
