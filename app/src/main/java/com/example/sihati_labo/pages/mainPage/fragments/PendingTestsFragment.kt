@@ -37,7 +37,6 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
     private lateinit var binding: FragmentPendingTestsBinding
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var testViewModel: TestViewModel
-    private lateinit var authViewModel: AuthViewModel
     private lateinit var pendingAdapter : PendingAdapter
 
     override fun onCreateView(
@@ -51,10 +50,6 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        authViewModel = ViewModelProvider(
-            this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[AuthViewModel::class.java]
 
         scheduleViewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
@@ -90,64 +85,6 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
     }
 
     override fun onClick(test: Test) {
-        FirebaseFirestore.getInstance().collection("User").document(test.user_id!!).get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    setupDialog(test,document.toObject<User>()!!.token.toString())
-                } else {
-                    Log.d("exeptions", "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("exeptions", "get failed with ", exception)
-            }
-    }
-
-    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            RetrofitInstance.api.postNotification(notification)
-        }catch (e: Exception){
-            Log.d("exeptions", "error: $e")
-        }
-    }
-
-    private fun setupDialog(test: Test,token: String){
-        /*setup the dialog*/
-        val dialog_set_result = Dialog(requireActivity())
-        dialog_set_result.setContentView(R.layout.set_result_dialog)
-        dialog_set_result.window?.setBackgroundDrawable(getDrawable(requireContext(),R.drawable.back_round_white))
-
-        val positive = dialog_set_result.findViewById<AppCompatButton>(R.id.positive)
-        val negative = dialog_set_result.findViewById<AppCompatButton>(R.id.negative)
-
-        positive.setOnClickListener {
-            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
-            val newTest = Test(test.date_end,test.laboratory_id,"Positive",test.user_id,test.schedule_id)
-            testViewModel.updateTest(oldTest,newTest)
-            testViewModel.updateUser(test.user_id!!,"Positive")
-            PushNotification(
-                NotificationData("Resultat","Votre resultat est pret"),
-                token
-            ).also {
-                sendNotification(it)
-            }
-            dialog_set_result.dismiss()
-        }
-
-        negative.setOnClickListener {
-            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
-            val newTest = Test(test.date_end,test.laboratory_id,"Negative",test.user_id,test.schedule_id)
-            testViewModel.updateTest(oldTest,newTest)
-            testViewModel.updateUser(test.user_id!!,"Negative")
-            PushNotification(
-                NotificationData("Resultat","Votre resultat est pret"),
-                token
-            ).also {
-                sendNotification(it)
-            }
-            dialog_set_result.dismiss()
-        }
-
-        dialog_set_result.show()
+        testViewModel.sendNotificationToUserWithID(test,requireActivity())
     }
 }

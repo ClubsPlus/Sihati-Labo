@@ -34,4 +34,7 @@ class TestViewModel : ViewModel() {
     fun updateUser(uid: String, result: String){
         mRepository.updateUser(uid,result)
     }
+    fun sendNotificationToUserWithID(test: Test,activity: Activity){
+        mRepository.sendNotificationToUserWithID(test,activity)
+    }
 }

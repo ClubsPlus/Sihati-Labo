@@ -1,11 +1,18 @@
 package com.example.sihati_labo.repositories
 
 import android.app.Activity
+import android.app.Dialog
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
+import com.example.sihati_labo.R
+import com.example.sihati_labo.notification.NotificationData
+import com.example.sihati_labo.notification.PushNotification
+import com.example.sihati_labo.notification.RetrofitInstance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
@@ -167,6 +174,72 @@ class TestRepository {
 
         }else{
             Log.d("exeptions","error: the retrieving query is empty")
+        }
+    }
+
+    fun sendNotificationToUserWithID(test: Test,activity: Activity){
+        FirebaseFirestore.getInstance().collection("User").document(test.user_id!!).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    setupDialog(test,document.toObject<User>()!!.token.toString(),activity)
+                } else {
+                    Log.d("exeptions", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("exeptions", "get failed with ", exception)
+            }
+    }
+
+    private fun setupDialog(test: Test,token: String,activity: Activity){
+        val dialog_set_result = Dialog(activity)
+        dialog_set_result.setContentView(R.layout.set_result_dialog)
+        dialog_set_result.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.back_round_white
+            )
+        )
+
+        val positive = dialog_set_result.findViewById<AppCompatButton>(R.id.positive)
+        val negative = dialog_set_result.findViewById<AppCompatButton>(R.id.negative)
+
+        positive.setOnClickListener {
+            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
+            val newTest = Test(test.date_end,test.laboratory_id,"Positive",test.user_id,test.schedule_id)
+            updateTest(oldTest,newTest)
+            updateUser(test.user_id!!,"Positive")
+            PushNotification(
+                NotificationData("Resultat","Votre resultat est pret"),
+                token
+            ).also {
+                sendNotification(it)
+            }
+            dialog_set_result.dismiss()
+        }
+
+        negative.setOnClickListener {
+            val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
+            val newTest = Test(test.date_end,test.laboratory_id,"Negative",test.user_id,test.schedule_id)
+            updateTest(oldTest,newTest)
+            updateUser(test.user_id!!,"Negative")
+            PushNotification(
+                NotificationData("Resultat","Votre resultat est pret"),
+                token
+            ).also {
+                sendNotification(it)
+            }
+            dialog_set_result.dismiss()
+        }
+
+        dialog_set_result.show()
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            RetrofitInstance.api.postNotification(notification)
+        }catch (e: Exception){
+            Log.d("exeptions", "error: $e")
         }
     }
 }

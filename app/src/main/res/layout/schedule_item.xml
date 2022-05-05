@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="08:00"
+            android:text=""
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20dp"/>
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="09:00"
+            android:text=""
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20dp"/>
@@ -92,7 +92,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mercredi 05/04"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:text="29/50"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
