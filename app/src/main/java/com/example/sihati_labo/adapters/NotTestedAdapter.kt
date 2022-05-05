@@ -34,14 +34,12 @@ class NotTestedAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NotTestedViewHolder, position: Int) {
         allTests[position].user_id?.let {
-            viewModel.getUserById(it)
-            holder.personName.text = "${viewModel.user?.name}"
+            viewModel.getUserByIdAndSet(it,holder.personName)
         }
 
         holder.button.setOnClickListener {
             setOnClickInterface.onClick(allTests[position])
         }
-
     }
 
     override fun getItemCount() = allTests.size

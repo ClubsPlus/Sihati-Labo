@@ -1,8 +1,10 @@
 package com.example.sihati_labo.repositories
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Laboratory
@@ -64,15 +66,20 @@ class ScheduleRepository {
             }
     }
 
-    fun getScheduleById(uid:String) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val querySnapshot = schedulesCollectionRef.document(uid).get().await()
-            if (querySnapshot.toObject<Schedule>() != null) schedule = querySnapshot.toObject<Schedule>()
-        } catch(e: Exception) {
-            withContext(Dispatchers.Main) {
-                Log.d("exeptions", e.message.toString())
+    @SuppressLint("SetTextI18n")
+    fun getScheduleByIdAndSet(uid:String, date:TextView?=null, time:TextView?=null) {
+        schedulesCollectionRef.document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    date?.text = "${document.toObject<Schedule>()?.date}"
+                    time?.text = "${document.toObject<Schedule>()?.time_Start} - ${document.toObject<Schedule>()?.time_end}"
+                } else {
+                    Log.d("exeptions", "No such document")
+                }
             }
-        }
+            .addOnFailureListener { exception ->
+                Log.d("exeptions", "get failed with ", exception)
+            }
     }
 
     fun updateSchedule(schedule: Schedule, newSchedule: Schedule) = CoroutineScope(Dispatchers.IO).launch {
@@ -101,7 +108,6 @@ class ScheduleRepository {
         }
     }
 
-
     fun saveSchedule(schedule: Schedule,activity: Activity) = CoroutineScope(Dispatchers.IO).launch{
         try{
             schedulesCollectionRef.add(schedule).await()
@@ -115,14 +121,17 @@ class ScheduleRepository {
         }
     }
 
-    fun getUserById(uid:String) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val querySnapshot = usersCollectionRef.document(uid).get().await()
-            if (querySnapshot.toObject<User>() != null) user = querySnapshot.toObject()
-        } catch(e: Exception) {
-            withContext(Dispatchers.Main) {
-                Log.d("exeptions", e.message.toString())
+    fun getUserByIdAndSet(uid:String, name: TextView){
+        usersCollectionRef.document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    name.text = "${document.toObject<User>()?.name}"
+                } else {
+                    Log.d("exeptions", "No such document")
+                }
             }
-        }
+            .addOnFailureListener { exception ->
+                Log.d("exeptions", "get failed with ", exception)
+            }
     }
 }

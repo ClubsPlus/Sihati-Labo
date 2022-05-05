@@ -2,6 +2,7 @@ package com.example.sihati_labo.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.R
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 
 class TestAdapter(
     val context: Context,
@@ -34,14 +38,11 @@ class TestAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: TestViewHolder, position: Int) {
         allTests[position].user_id?.let {
-            viewModel.getUserById(it)
-            holder.laboratoryName.text = "${viewModel.user?.name}"
+            viewModel.getUserByIdAndSet(it,holder.personName)
         }
 
         allTests[position].schedule_id?.let {
-            viewModel.getScheduleById(it)
-            holder.date.text = "${viewModel.schedule?.date}"
-            holder.time.text = "${viewModel.schedule?.time_Start} - ${viewModel.schedule?.time_end}"
+            viewModel.getScheduleByIdAndSet(it,holder.date,holder.time)
         }
 
         when(allTests[position].result){
@@ -70,7 +71,7 @@ class TestAdapter(
 
     inner class TestViewHolder (itView: View) :
         RecyclerView.ViewHolder(itView) {
-        val laboratoryName : TextView = itemView.findViewById(R.id.laboratory_name)
+        val personName : TextView = itemView.findViewById(R.id.laboratory_name)
         val date : TextView = itemView.findViewById(R.id.date)
         val time : TextView = itemView.findViewById(R.id.time)
         val result : ImageView = itemView.findViewById(R.id.result_img)

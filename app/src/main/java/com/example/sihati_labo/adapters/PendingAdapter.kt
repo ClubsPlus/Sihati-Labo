@@ -34,8 +34,11 @@ class PendingAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PendingViewHolder, position: Int) {
         allTests[position].user_id?.let {
-            viewModel.getUserById(it)
-            holder.personName.text = "${viewModel.user?.name}"
+            viewModel.getUserByIdAndSet(it,holder.personName)
+        }
+
+        allTests[position].schedule_id?.let {
+            viewModel.getScheduleByIdAndSet(uid=it,date=holder.date)
         }
 
         holder.button.setOnClickListener {
