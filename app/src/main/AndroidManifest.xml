@@ -13,15 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SihatiLabo">
 
-        <service android:name=".notification.FirebaseService"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:exported="true">
+        <service
+            android:name=".notification.FirebaseService"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".pages.authPages.AuthActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".pages.scheduleDetails.ScheduleDetailsActivity"
             android:exported="false" />
@@ -33,25 +43,8 @@
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".pages.authPages.RecoverPassWordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".pages.authPages.SignupActivity"
-            android:exported="true" >
-
-        </activity>
-        <activity
-            android:name=".pages.authPages.LoginActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.sihati_labo.pages.mainPage.MainActivity"
-            android:exported="true"/>
+            android:name=".pages.mainPage.MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

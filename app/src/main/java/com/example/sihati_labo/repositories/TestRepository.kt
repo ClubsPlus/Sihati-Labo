@@ -3,7 +3,6 @@ package com.example.sihati_labo.repositories
 import android.app.Activity
 import android.app.Dialog
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
@@ -20,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import papaya.`in`.sendmail.SendMail
 
 class TestRepository {
 
@@ -215,6 +214,7 @@ class TestRepository {
             ).also {
                 sendNotification(it)
             }
+            sendEmail()
             dialog_set_result.dismiss()
         }
 
@@ -241,5 +241,19 @@ class TestRepository {
         }catch (e: Exception){
             Log.d("exeptions", "error: $e")
         }
+    }
+
+    private fun sendEmail(){
+        val username ="sihatiAlgeria@gmail.com"
+        val password="pL8H45BzkXNo"
+        val messageToSend = "houssembababendermel@gmail.com"
+        val mail = SendMail(
+            username,
+            password,
+            messageToSend,
+            "Testing Email Sending",
+            "Yes, it's working well\nI will use it always."
+        )
+        mail.execute()
     }
 }

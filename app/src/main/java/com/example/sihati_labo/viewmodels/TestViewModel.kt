@@ -3,7 +3,6 @@ package com.example.sihati_labo.viewmodels
 import android.app.Activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.repositories.TestRepository
 
@@ -34,6 +33,7 @@ class TestViewModel : ViewModel() {
     fun updateUser(uid: String, result: String){
         mRepository.updateUser(uid,result)
     }
+
     fun sendNotificationToUserWithID(test: Test,activity: Activity){
         mRepository.sendNotificationToUserWithID(test,activity)
     }
