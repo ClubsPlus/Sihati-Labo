@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.sihati_labo.R
 import com.example.sihati_labo.databinding.FragmentLoginBinding
 import com.example.sihati_labo.pages.mainPage.MainActivity
 import com.example.sihati_labo.viewmodels.AuthViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class LoginFragment : Fragment() {
 
@@ -50,5 +53,41 @@ class LoginFragment : Fragment() {
                 viewModel.signIn(binding.email.text.toString().trim(),binding.password.text.toString(),requireActivity())
             }else Toast.makeText(requireActivity(),"please fill your email and password",Toast.LENGTH_LONG).show()
         }
+
+        binding.forgetPassword.setOnClickListener {
+            setupEmailDialog()
+        }
+    }
+
+    private fun setupEmailDialog(){
+        val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.email_bottom_sheet_content, null)
+        view.findViewById<Button>(R.id.send).setOnClickListener {
+            setupCodeDialog()
+            dialog.dismiss()
+        }
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun setupCodeDialog(){
+        val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.code_bottom_sheet_content, null)
+        view.findViewById<Button>(R.id.send).setOnClickListener {
+            setupPassWordDialog()
+            dialog.dismiss()
+        }
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+    private fun setupPassWordDialog(){
+        val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.password_bottom_sheet_content, null)
+        view.findViewById<Button>(R.id.send).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setContentView(view)
+        dialog.show()
     }
 }
