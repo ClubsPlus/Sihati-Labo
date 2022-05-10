@@ -1,7 +1,11 @@
 package com.example.sihati_labo.pages.authPages.fragments
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +18,16 @@ import com.example.sihati_labo.databinding.FragmentLoginBinding
 import com.example.sihati_labo.pages.mainPage.MainActivity
 import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: AuthViewModel
+    private var firebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var progressDialog: ProgressDialog
+    private var email=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +52,10 @@ class LoginFragment : Fragment() {
             }
         }
 
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
+
 //        binding.forgetPassword.setOnClickListener {
 //            startActivity(Intent(requireActivity(), SignUpActivity::class.java))
 //        }
@@ -63,13 +76,23 @@ class LoginFragment : Fragment() {
         val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
         val view = layoutInflater.inflate(R.layout.email_bottom_sheet_content, null)
         view.findViewById<Button>(R.id.send).setOnClickListener {
-            setupCodeDialog()
-            dialog.dismiss()
+            email = view.findViewById<TextInputEditText>(R.id.email).text.toString().trim()
+
+            if(email.isEmpty()){
+                Toast.makeText(requireContext(),"Enter email...",Toast.LENGTH_LONG).show()
+            }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                Toast.makeText(requireContext(),"Invalid email pattern...",Toast.LENGTH_LONG).show()
+            }
+            else{
+                recoverPassword(dialog)
+            }
         }
         dialog.setContentView(view)
         dialog.show()
     }
 
+    @SuppressLint("InflateParams")
     private fun setupCodeDialog(){
         val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
         val view = layoutInflater.inflate(R.layout.code_bottom_sheet_content, null)
@@ -89,5 +112,22 @@ class LoginFragment : Fragment() {
         }
         dialog.setContentView(view)
         dialog.show()
+    }
+
+    private fun recoverPassword(dialog: BottomSheetDialog) {
+        progressDialog.setMessage("Sending password reset instruction to $email")
+        progressDialog.show()
+        firebaseAuth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(requireContext(),"Instructions send to \n$email",Toast.LENGTH_LONG).show()
+                setupCodeDialog()
+                dialog.dismiss()
+            }
+            .addOnFailureListener { e->
+                progressDialog.dismiss()
+                Toast.makeText(requireContext(),"Failed to send due to ${e.message}",Toast.LENGTH_LONG).show()
+            }
+
     }
 }

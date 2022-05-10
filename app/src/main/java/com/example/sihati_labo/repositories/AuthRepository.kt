@@ -39,7 +39,7 @@ class AuthenticationRepository(private val application: Application) {
         getUsers()
     }
 
-    fun getUsers(){
+    private fun getUsers(){
         val list  = ArrayList<User>()
         userCollectionRef
             .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
