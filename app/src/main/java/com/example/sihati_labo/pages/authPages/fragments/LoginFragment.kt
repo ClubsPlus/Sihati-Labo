@@ -121,7 +121,6 @@ class LoginFragment : Fragment() {
             .addOnSuccessListener {
                 progressDialog.dismiss()
                 Toast.makeText(requireContext(),"Instructions send to \n$email",Toast.LENGTH_LONG).show()
-                setupCodeDialog()
                 dialog.dismiss()
             }
             .addOnFailureListener { e->
