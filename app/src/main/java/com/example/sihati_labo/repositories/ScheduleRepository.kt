@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.sihati_labo.Database.Laboratory
 import com.example.sihati_labo.Database.Schedule
+import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
 import com.example.sihati_labo.adapters.ScheduleAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -133,5 +134,13 @@ class ScheduleRepository {
             .addOnFailureListener { exception ->
                 Log.d("exeptions", "get failed with ", exception)
             }
+    }
+
+    fun deleteSchedule(schedule: Schedule){
+
+    }
+
+    fun sendNotificationToUserWithSChedule(schedule: Schedule, activity: Activity){
+
     }
 }

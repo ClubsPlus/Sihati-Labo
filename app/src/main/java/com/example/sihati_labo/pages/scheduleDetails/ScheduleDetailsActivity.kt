@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.R
 import com.example.sihati_labo.adapters.NotTestedAdapter
@@ -38,6 +39,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
         }
         if(intent.getStringExtra("id")!=null&&
             intent.getStringExtra("date")!=null&&
+            intent.getStringExtra("laboratory_id")!=null&&
             intent.getStringExtra("limite")!=null&&
             intent.getStringExtra("person")!=null&&
             intent.getStringExtra("time_Start")!=null&&
@@ -54,7 +56,20 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                 this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
             )[TestViewModel::class.java]
 
-            Log.d("test","I did receive data")
+
+            binding.delete.setOnClickListener {
+                val schedule = Schedule(intent.getStringExtra("id"),
+                    intent.getStringExtra("date"),
+                    intent.getStringExtra("laboratory_id"),
+                    intent.getStringExtra("limite")!!.toInt(),
+                    intent.getStringExtra("person")!!.toInt(),
+                    intent.getStringExtra("time_Start"),
+                    intent.getStringExtra("time_end"))
+
+                scheduleViewModel.deleteSchedule(schedule)
+                scheduleViewModel.sendNotificationToUserWithSChedule(schedule,this)
+            }
+
             binding.date.text = intent.getStringExtra("date")
             binding.time.text = "${intent.getStringExtra("time_Start")} - ${intent.getStringExtra("time_end")}"
             val rest = intent.getStringExtra("limite")!!.toInt() - intent.getStringExtra("person")!!.toInt()

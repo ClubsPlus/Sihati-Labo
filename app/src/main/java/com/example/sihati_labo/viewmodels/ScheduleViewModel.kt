@@ -40,4 +40,12 @@ class ScheduleViewModel : ViewModel() {
     fun getUserByIdAndSet(uid: String,name: TextView){
         mRepository.getUserByIdAndSet(uid,name)
     }
+
+    fun deleteSchedule(schedule: Schedule){
+        mRepository.deleteSchedule(schedule)
+    }
+
+    fun sendNotificationToUserWithSChedule(schedule: Schedule,activity: Activity){
+        mRepository.sendNotificationToUserWithSChedule(schedule,activity)
+    }
 }
