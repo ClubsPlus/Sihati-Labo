@@ -157,7 +157,7 @@ class ScheduleRepository {
 
     fun sendNotificationToUserWithSChedule(schedule: Schedule, activity: Activity){
         PushNotification(
-            NotificationData("Resultat","Votre resultat est pret"),
+            NotificationData("aanulation","Votre rendez-vous est annuler"),
             schedule.id!!
         ).also {
             sendNotification(it)
