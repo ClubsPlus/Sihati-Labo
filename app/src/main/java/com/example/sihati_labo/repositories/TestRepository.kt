@@ -256,4 +256,14 @@ class TestRepository {
         )
         mail.execute()
     }
+
+    fun deleteTestsWithScheduleID(id: String) {
+        testCollectionRef
+            .whereEqualTo("schedule_id", id)
+            .get().addOnSuccessListener {
+                for (document in it) {
+                    testCollectionRef.document(document.id).delete()
+                }
+            }
+    }
 }

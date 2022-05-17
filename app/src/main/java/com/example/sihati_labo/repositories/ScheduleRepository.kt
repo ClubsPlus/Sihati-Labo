@@ -12,6 +12,9 @@ import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
 import com.example.sihati_labo.adapters.ScheduleAdapter
+import com.example.sihati_labo.notification.NotificationData
+import com.example.sihati_labo.notification.PushNotification
+import com.example.sihati_labo.notification.RetrofitInstance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
@@ -137,10 +140,34 @@ class ScheduleRepository {
     }
 
     fun deleteSchedule(schedule: Schedule){
-
+        schedulesCollectionRef
+            .whereEqualTo("id", schedule.id)
+            .whereEqualTo("date", schedule.date)
+            .whereEqualTo("laboratory_id", schedule.laboratory_id)
+            .whereEqualTo("limite", schedule.limite)
+            .whereEqualTo("person", schedule.person)
+            .whereEqualTo("time_Start", schedule.time_Start)
+            .whereEqualTo("time_end", schedule.time_end)
+            .get().addOnSuccessListener {
+                for (document in it) {
+                    schedulesCollectionRef.document(document.id).delete()
+                }
+            }
     }
 
     fun sendNotificationToUserWithSChedule(schedule: Schedule, activity: Activity){
+        PushNotification(
+            NotificationData("Resultat","Votre resultat est pret"),
+            schedule.id!!
+        ).also {
+            sendNotification(it)
+        }
+    }
 
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            RetrofitInstance.api.postNotification(notification)
+        }catch (e: Exception) {
+        }
     }
 }

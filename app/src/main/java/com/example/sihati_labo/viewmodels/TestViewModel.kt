@@ -37,4 +37,8 @@ class TestViewModel : ViewModel() {
     fun sendNotificationToUserWithID(test: Test,activity: Activity){
         mRepository.sendNotificationToUserWithID(test,activity)
     }
+
+    fun deleteTestsWithScheduleID(id: String) {
+        mRepository.deleteTestsWithScheduleID(id)
+    }
 }

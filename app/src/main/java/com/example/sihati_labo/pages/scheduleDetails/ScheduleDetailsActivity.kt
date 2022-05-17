@@ -1,6 +1,7 @@
 package com.example.sihati_labo.pages.scheduleDetails
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.example.sihati_labo.adapters.NotTestedAdapter
 import com.example.sihati_labo.databinding.ActivityScheduleDetailsBinding
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -56,18 +58,26 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                 this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
             )[TestViewModel::class.java]
 
-
             binding.delete.setOnClickListener {
-                val schedule = Schedule(intent.getStringExtra("id"),
-                    intent.getStringExtra("date"),
-                    intent.getStringExtra("laboratory_id"),
-                    intent.getStringExtra("limite")!!.toInt(),
-                    intent.getStringExtra("person")!!.toInt(),
-                    intent.getStringExtra("time_Start"),
-                    intent.getStringExtra("time_end"))
+                AlertDialog.Builder(this)
+                    .setTitle("suprimer")
+                    .setMessage("Vous voulez vraiment suprimer le rendez-vous?")
+                    .setPositiveButton("oui"
+                    ) { _, _ ->
+                        val schedule = Schedule(intent.getStringExtra("id"),
+                            intent.getStringExtra("date"),
+                            intent.getStringExtra("laboratory_id"),
+                            intent.getStringExtra("limite")!!.toInt(),
+                            intent.getStringExtra("person")!!.toInt(),
+                            intent.getStringExtra("time_Start"),
+                            intent.getStringExtra("time_end")
+                        )
 
-                scheduleViewModel.deleteSchedule(schedule)
-                scheduleViewModel.sendNotificationToUserWithSChedule(schedule,this)
+                        testViewModel.deleteTestsWithScheduleID(schedule.id!!)
+                        scheduleViewModel.deleteSchedule(schedule)
+                        scheduleViewModel.sendNotificationToUserWithSChedule(schedule,this)
+                    }
+                    .setNegativeButton("non", null).show()
             }
 
             binding.date.text = intent.getStringExtra("date")
