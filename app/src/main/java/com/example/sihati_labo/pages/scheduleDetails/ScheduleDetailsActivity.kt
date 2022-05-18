@@ -2,6 +2,7 @@ package com.example.sihati_labo.pages.scheduleDetails
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.R
 import com.example.sihati_labo.adapters.NotTestedAdapter
 import com.example.sihati_labo.databinding.ActivityScheduleDetailsBinding
+import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
 import com.google.firebase.messaging.FirebaseMessaging
@@ -47,6 +49,14 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
             intent.getStringExtra("time_Start")!=null&&
             intent.getStringExtra("time_end")!=null){
 
+            val id = intent.getStringExtra("id")
+            val date = intent.getStringExtra("date")
+            val laboratory_id = intent.getStringExtra("laboratory_id")
+            val limite = intent.getStringExtra("limite")
+            val person = intent.getStringExtra("person")
+            val time_Start = intent.getStringExtra("time_Start")
+            val time_end = intent.getStringExtra("id")
+
             // setup the viewModel
             scheduleViewModel = ViewModelProvider(
                 this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
@@ -64,20 +74,25 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                     .setMessage("Vous voulez vraiment suprimer le rendez-vous?")
                     .setPositiveButton("oui"
                     ) { _, _ ->
-                        val schedule = Schedule(intent.getStringExtra("id"),
-                            intent.getStringExtra("date"),
-                            intent.getStringExtra("laboratory_id"),
-                            intent.getStringExtra("limite")!!.toInt(),
-                            intent.getStringExtra("person")!!.toInt(),
-                            intent.getStringExtra("time_Start"),
-                            intent.getStringExtra("time_end")
-                        )
+                        val schedule = Schedule(id,date,laboratory_id,limite!!.toInt(),person!!.toInt(),time_Start,time_end)
 
                         testViewModel.deleteTestsWithScheduleID(schedule.id!!)
                         scheduleViewModel.deleteSchedule(schedule)
                         scheduleViewModel.sendNotificationToUserWithSChedule(schedule,this)
                     }
                     .setNegativeButton("non", null).show()
+            }
+
+            binding.edit.setOnClickListener {
+                val editIntent = Intent(this,CreateScheduleActivity::class.java)
+                editIntent.putExtra("id",id)
+                editIntent.putExtra("date",date)
+                editIntent.putExtra("laboratory_id",laboratory_id)
+                editIntent.putExtra("limite",limite)
+                editIntent.putExtra("person",person)
+                editIntent.putExtra("time_Start",time_Start)
+                editIntent.putExtra("time_end",time_end)
+                startActivity(editIntent)
             }
 
             binding.date.text = intent.getStringExtra("date")
@@ -111,21 +126,29 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
     }
 
     override fun onClick(test: Test) {
-        val oldTest = Test(laboratory_id=test.laboratory_id,
-            result=test.result,
-            user_id=test.user_id,
-            schedule_id=test.schedule_id)
+        AlertDialog.Builder(this)
+            .setTitle("fait")
+            .setMessage("le test st vraiment fait?")
+            .setPositiveButton("oui"
+            ) { _, _ ->
+                val oldTest = Test(laboratory_id=test.laboratory_id,
+                    result=test.result,
+                    user_id=test.user_id,
+                    schedule_id=test.schedule_id)
 
-        val finishDate= LocalDateTime.now().plusDays(7)
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val date = finishDate.format(formatter)
+                val finishDate= LocalDateTime.now().plusDays(7)
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val date = finishDate.format(formatter)
 
-        val newTest = Test(date_end=date,
-            laboratory_id=test.laboratory_id,
-            result = "Pending",
-            user_id=test.user_id,
-            schedule_id=test.schedule_id)
+                val newTest = Test(date_end=date,
+                    laboratory_id=test.laboratory_id,
+                    result = "Pending",
+                    user_id=test.user_id,
+                    schedule_id=test.schedule_id)
 
-        testViewModel.updateTest(oldTest,newTest)
+                testViewModel.updateTest(oldTest,newTest)
+            }
+            .setNegativeButton("non", null).show()
+
     }
 }

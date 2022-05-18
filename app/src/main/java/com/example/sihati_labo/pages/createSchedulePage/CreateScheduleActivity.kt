@@ -38,6 +38,24 @@ class CreateScheduleActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
+
+        if(intent.getStringExtra("id")!=null&&
+            intent.getStringExtra("date")!=null&&
+            intent.getStringExtra("laboratory_id")!=null&&
+            intent.getStringExtra("limite")!=null&&
+            intent.getStringExtra("person")!=null&&
+            intent.getStringExtra("time_Start")!=null&&
+            intent.getStringExtra("time_end")!=null){
+
+            binding.max.setText(intent.getStringExtra("limite"))
+
+            binding.startTime.currentHour = intent.getStringExtra("time_Start").toString().dropLast(3).toInt()
+            binding.startTime.currentMinute = intent.getStringExtra("time_Start").toString().drop(3).toInt()
+
+            binding.endTime.currentHour = intent.getStringExtra("time_end").toString().dropLast(3).toInt()
+            binding.endTime.currentMinute = intent.getStringExtra("time_end").toString().drop(3).toInt()
+
+        }
         // Check if user is signed in (non-null) and update UI accordingly.
         val viewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
