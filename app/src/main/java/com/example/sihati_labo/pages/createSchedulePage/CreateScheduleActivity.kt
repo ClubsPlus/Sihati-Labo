@@ -9,19 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.R
 import com.example.sihati_labo.databinding.ActivityCreateScheduleBinding
-import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 class CreateScheduleActivity : AppCompatActivity() {
 
@@ -30,6 +20,7 @@ class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var date: String
     private lateinit var startTime: String
     private lateinit var endTime: String
+    private var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +38,8 @@ class CreateScheduleActivity : AppCompatActivity() {
             intent.getStringExtra("time_Start")!=null&&
             intent.getStringExtra("time_end")!=null){
 
+            edit = true
+
             binding.max.setText(intent.getStringExtra("limite"))
 
             binding.startTime.currentHour = intent.getStringExtra("time_Start").toString().dropLast(3).toInt()
@@ -55,6 +48,10 @@ class CreateScheduleActivity : AppCompatActivity() {
             binding.endTime.currentHour = intent.getStringExtra("time_end").toString().dropLast(3).toInt()
             binding.endTime.currentMinute = intent.getStringExtra("time_end").toString().drop(3).toInt()
 
+            binding.calander.selectedDay = Day(intent.getStringExtra("date").toString().drop(6).toInt(),
+                intent.getStringExtra("date").toString().dropLast(5).drop(3).toInt(),
+                intent.getStringExtra("date").toString().dropLast(8).toInt())
+
         }
         // Check if user is signed in (non-null) and update UI accordingly.
         val viewModel = ViewModelProvider(
@@ -62,6 +59,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         )[ScheduleViewModel::class.java]
 
         binding.rollback.setOnClickListener { finish() }
+
         setCalendar(binding.calander)
         binding.add.setOnClickListener {
             if (date.isNotEmpty()
@@ -71,11 +69,30 @@ class CreateScheduleActivity : AppCompatActivity() {
                 startTime = getsTime(binding.startTime)
                 endTime = getsTime(binding.endTime)
                 if(checkTime(startTime,endTime)){
-                    viewModel.saveSchedule(Schedule(date=date
-                        ,laboratory_id=viewModel.auth.uid
-                        ,limite=binding.max.text.toString().toInt()
-                        ,time_Start=getsTime(binding.startTime)
-                        ,time_end=getsTime(binding.endTime)),this)
+                    if(edit==false){
+                        viewModel.saveSchedule(Schedule(date=date
+                            ,laboratory_id=viewModel.auth.uid
+                            ,limite=binding.max.text.toString().toInt()
+                            ,time_Start=getsTime(binding.startTime)
+                            ,time_end=getsTime(binding.endTime)),this)
+                    }else{
+                        val oldSchedule = Schedule(id=intent.getStringExtra("id")
+                            ,date=intent.getStringExtra("date")
+                            ,laboratory_id=intent.getStringExtra("laboratory_id")
+                            ,limite=intent.getStringExtra("limite")!!.toInt()
+                            ,person=intent.getStringExtra("person")!!.toInt()
+                            ,time_Start=intent.getStringExtra("time_Start")
+                            ,time_end=intent.getStringExtra("time_end"))
+
+                        val newSchedule = Schedule(id=intent.getStringExtra("id")
+                            ,date=date
+                            ,laboratory_id=intent.getStringExtra("laboratory_id")
+                            ,limite=binding.max.text.toString().toInt()
+                            ,time_Start=getsTime(binding.startTime)
+                            ,time_end=getsTime(binding.endTime))
+
+                        viewModel.editSchedule(oldSchedule,newSchedule,this)
+                    }
                     finish()
                 }else Toast.makeText(this,"please set the end time after the start time",Toast.LENGTH_SHORT).show()
             }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()

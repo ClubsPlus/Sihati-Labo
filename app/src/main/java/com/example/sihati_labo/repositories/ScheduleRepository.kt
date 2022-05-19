@@ -170,4 +170,32 @@ class ScheduleRepository {
         }catch (e: Exception) {
         }
     }
+
+    fun editSchedule(oldSchedule: Schedule, newSchedule: Schedule, activity: Activity) = CoroutineScope(Dispatchers.IO).launch {
+        schedulesCollectionRef
+            .whereEqualTo("id",oldSchedule.id)
+            .whereEqualTo("date",oldSchedule.date)
+            .whereEqualTo("laboratory_id",oldSchedule.laboratory_id)
+            .whereEqualTo("limite",oldSchedule.limite)
+            .whereEqualTo("person",oldSchedule.person)
+            .whereEqualTo("time_Start",oldSchedule.time_Start)
+            .whereEqualTo("time_end",oldSchedule.time_end)
+            .get().addOnSuccessListener { query->
+                if(query.documents.isNotEmpty()){
+                    for(document in query){
+                        try {
+                            schedulesCollectionRef.document(document.id).set(
+                                newSchedule,
+                                SetOptions.merge()
+                            )
+                            Toast.makeText(activity,"le rendez-vous est modifier", Toast.LENGTH_LONG).show()
+                        }catch (e:Exception){
+                            Log.d("exeptions","error: "+e.message.toString())
+                        }
+                    }
+                }else{
+                    Log.d("exeptions","error: the retrieving query is empty")
+                }
+            }
+    }
 }
