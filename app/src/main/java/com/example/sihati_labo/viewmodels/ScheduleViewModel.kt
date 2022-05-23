@@ -45,8 +45,8 @@ class ScheduleViewModel : ViewModel() {
         mRepository.deleteSchedule(schedule)
     }
 
-    fun sendNotificationToUserWithSChedule(schedule: Schedule,activity: Activity){
-        mRepository.sendNotificationToUserWithSChedule(schedule,activity)
+    fun sendNotificationToUserWithSChedule(schedule: Schedule,title: String,text:String){
+        mRepository.sendNotificationToUserWithSChedule(schedule,title,text)
     }
 
     fun editSchedule(oldSchedule: Schedule, newSchedule: Schedule, activity: Activity) {

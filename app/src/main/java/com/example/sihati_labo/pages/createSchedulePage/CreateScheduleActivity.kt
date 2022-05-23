@@ -92,6 +92,9 @@ class CreateScheduleActivity : AppCompatActivity() {
                             ,time_end=getsTime(binding.endTime))
 
                         viewModel.editSchedule(oldSchedule,newSchedule,this)
+                        viewModel.sendNotificationToUserWithSChedule(newSchedule,
+                            "modification"
+                            ,"Votre rendez-vous a ete modifier")
                     }
                     finish()
                 }else Toast.makeText(this,"please set the end time after the start time",Toast.LENGTH_SHORT).show()

@@ -78,7 +78,9 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
 
                         testViewModel.deleteTestsWithScheduleID(schedule.id!!)
                         scheduleViewModel.deleteSchedule(schedule)
-                        scheduleViewModel.sendNotificationToUserWithSChedule(schedule,this)
+                        scheduleViewModel.sendNotificationToUserWithSChedule(schedule,
+                            "anulation"
+                        ,"Votre rendez-vous est annuler")
                     }
                     .setNegativeButton("non", null).show()
             }
