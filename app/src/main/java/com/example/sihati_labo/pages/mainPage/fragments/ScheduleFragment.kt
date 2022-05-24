@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,10 +128,12 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         val intent = Intent(requireActivity(),ScheduleDetailsActivity::class.java)
         intent.putExtra("id",schedule.id)
         intent.putExtra("date",schedule.date)
+        intent.putExtra("laboratory_id",schedule.laboratory_id)
         intent.putExtra("limite",schedule.limite.toString())
         intent.putExtra("person",schedule.person.toString())
         intent.putExtra("time_Start",schedule.time_Start)
         intent.putExtra("time_end",schedule.time_end)
+        Log.d("test",schedule.date.toString())
         requireActivity().startActivity(intent)
     }
 }

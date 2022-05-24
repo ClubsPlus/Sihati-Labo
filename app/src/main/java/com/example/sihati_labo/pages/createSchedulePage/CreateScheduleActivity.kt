@@ -1,6 +1,7 @@
 package com.example.sihati_labo.pages.createSchedulePage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
@@ -18,6 +19,7 @@ class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateScheduleBinding
 
     private lateinit var date: String
+    private lateinit var dateEdit: String
     private lateinit var startTime: String
     private lateinit var endTime: String
     private var edit = false
@@ -38,6 +40,9 @@ class CreateScheduleActivity : AppCompatActivity() {
             intent.getStringExtra("time_Start")!=null&&
             intent.getStringExtra("time_end")!=null){
 
+            binding.title.text = "Edit Appointment"
+            binding.add.text = "Edit"
+
             edit = true
 
             binding.max.setText(intent.getStringExtra("limite"))
@@ -48,10 +53,12 @@ class CreateScheduleActivity : AppCompatActivity() {
             binding.endTime.currentHour = intent.getStringExtra("time_end").toString().dropLast(3).toInt()
             binding.endTime.currentMinute = intent.getStringExtra("time_end").toString().drop(3).toInt()
 
-            binding.calander.selectedDay = Day(intent.getStringExtra("date").toString().drop(6).toInt(),
+            date = intent.getStringExtra("date")!!
+            dateEdit = intent.getStringExtra("date")!!
+            binding.calander.selectedDay =
+                Day(intent.getStringExtra("date").toString().drop(6).toInt(),
                 intent.getStringExtra("date").toString().dropLast(5).drop(3).toInt(),
                 intent.getStringExtra("date").toString().dropLast(8).toInt())
-
         }
         // Check if user is signed in (non-null) and update UI accordingly.
         val viewModel = ViewModelProvider(
@@ -77,7 +84,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                             ,time_end=getsTime(binding.endTime)),this)
                     }else{
                         val oldSchedule = Schedule(id=intent.getStringExtra("id")
-                            ,date=intent.getStringExtra("date")
+                            ,date=dateEdit
                             ,laboratory_id=intent.getStringExtra("laboratory_id")
                             ,limite=intent.getStringExtra("limite")!!.toInt()
                             ,person=intent.getStringExtra("person")!!.toInt()

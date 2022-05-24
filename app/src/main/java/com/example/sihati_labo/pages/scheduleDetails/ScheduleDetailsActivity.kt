@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,7 +56,11 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
             val limite = intent.getStringExtra("limite")
             val person = intent.getStringExtra("person")
             val time_Start = intent.getStringExtra("time_Start")
-            val time_end = intent.getStringExtra("id")
+            val time_end = intent.getStringExtra("time_end")
+
+            binding.date.text = date
+            binding.time.text = time_Start + " - " + time_end
+
 
             // setup the viewModel
             scheduleViewModel = ViewModelProvider(
@@ -81,6 +86,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                         scheduleViewModel.sendNotificationToUserWithSChedule(schedule,
                             "anulation"
                         ,"Votre rendez-vous est annuler")
+                        finish()
                     }
                     .setNegativeButton("non", null).show()
             }
@@ -96,16 +102,11 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                 editIntent.putExtra("time_end",time_end)
                 startActivity(editIntent)
             }
-
-            binding.date.text = intent.getStringExtra("date")
-            binding.time.text = "${intent.getStringExtra("time_Start")} - ${intent.getStringExtra("time_end")}"
-            val rest = intent.getStringExtra("limite")!!.toInt() - intent.getStringExtra("person")!!.toInt()
-            binding.person.text = "Il reste $rest patient a tester"
-
             recyclerViewSetup(intent.getStringExtra("id")!!)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun recyclerViewSetup(id:String) {
         // on below line we are setting layout
         // manager to our recycler view.
@@ -121,6 +122,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
         testViewModel.getTestsWithScheduleId(id)
         testViewModel.testsWithId?.observe(this){ list ->
             list?.let {
+                binding.person.text = "Il reste "+ it.size +" patient a tester"
                 // on below line we are updating our list.
                 notTestedAdapter.updateList(it)
             }

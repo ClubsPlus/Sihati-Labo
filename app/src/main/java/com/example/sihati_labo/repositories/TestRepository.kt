@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
+import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
 import com.example.sihati_labo.R
@@ -262,7 +263,10 @@ class TestRepository {
             .whereEqualTo("schedule_id", id)
             .get().addOnSuccessListener {
                 for (document in it) {
-                    testCollectionRef.document(document.id).delete()
+                    if(document.toObject<Test>().result=="Not Tested" ||
+                        document.toObject<Test>().result=="Pending"){
+                        testCollectionRef.document(document.id).delete()
+                    }
                 }
             }
     }

@@ -2,16 +2,12 @@ package com.example.sihati_labo.repositories
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Application
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.example.sihati_labo.Database.Laboratory
 import com.example.sihati_labo.Database.Schedule
-import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
-import com.example.sihati_labo.adapters.ScheduleAdapter
 import com.example.sihati_labo.notification.NotificationData
 import com.example.sihati_labo.notification.PushNotification
 import com.example.sihati_labo.notification.RetrofitInstance
@@ -114,7 +110,13 @@ class ScheduleRepository {
 
     fun saveSchedule(schedule: Schedule,activity: Activity) = CoroutineScope(Dispatchers.IO).launch{
         try{
-            schedulesCollectionRef.add(schedule).await()
+            schedulesCollectionRef.add(schedule).addOnSuccessListener {
+                schedule.id = it.id
+                it.set(
+                    schedule,
+                    SetOptions.merge()
+                )
+            }
             withContext(Dispatchers.Main){
                 Toast.makeText(activity,"successfully saved data", Toast.LENGTH_LONG).show()
             }
@@ -181,20 +183,25 @@ class ScheduleRepository {
             .whereEqualTo("time_Start",oldSchedule.time_Start)
             .whereEqualTo("time_end",oldSchedule.time_end)
             .get().addOnSuccessListener { query->
+                Log.d("edit","get done")
                 if(query.documents.isNotEmpty()){
+                    Log.d("edit","not empty")
                     for(document in query){
                         try {
                             schedulesCollectionRef.document(document.id).set(
                                 newSchedule,
                                 SetOptions.merge()
-                            )
+                            ).addOnSuccessListener {
+                                Log.d("edit","edit done")
+
+                            }
                             Toast.makeText(activity,"le rendez-vous est modifier", Toast.LENGTH_LONG).show()
                         }catch (e:Exception){
-                            Log.d("exeptions","error: "+e.message.toString())
+                            Log.d("edit","error: "+e.message.toString())
                         }
                     }
                 }else{
-                    Log.d("exeptions","error: the retrieving query is empty")
+                    Log.d("edit","error: the retrieving query is empty")
                 }
             }
     }
