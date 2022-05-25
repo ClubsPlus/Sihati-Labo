@@ -160,7 +160,7 @@ class ScheduleRepository {
     fun sendNotificationToUserWithSChedule(schedule: Schedule,title:String,text:String){
         PushNotification(
             NotificationData(title,text),
-            schedule.id!!
+            "/topics/"+schedule.id!!
         ).also {
             sendNotification(it)
         }
