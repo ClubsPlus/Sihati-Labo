@@ -2,11 +2,11 @@ package com.example.sihati_labo.repositories
 
 import android.app.Activity
 import android.app.Dialog
+import android.os.StrictMode
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
-import com.example.sihati_labo.Database.Schedule
 import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.Database.User
 import com.example.sihati_labo.R
@@ -20,7 +20,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import papaya.`in`.sendmail.SendMail
+import java.util.*
+import javax.mail.*
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 class TestRepository {
 
@@ -215,7 +218,7 @@ class TestRepository {
             ).also {
                 sendNotification(it)
             }
-            sendEmail()
+            sendEmail(activity)
             dialog_set_result.dismiss()
         }
 
@@ -244,18 +247,55 @@ class TestRepository {
         }
     }
 
-    private fun sendEmail(){
-        val username ="sihatiAlgeria@gmail.com"
-        val password="pL8H45BzkXNo"
-        val messageToSend = "houssembababendermel@gmail.com"
-        val mail = SendMail(
-            username,
-            password,
-            messageToSend,
-            "Testing Email Sending",
-            "Yes, it's working well\nI will use it always."
+    private fun sendEmail(context: Activity) = CoroutineScope(Dispatchers.IO).launch {
+//        val javaMailAPI = MailAPI(context,
+//            "houssembababendermel@gmail.com",
+//            "test",
+//            "you are positive")
+//
+//        javaMailAPI.execute()
+
+        val props = Properties()
+        props["mail.smtp.auth"] = "true"
+        props["mail.smtp.starttls.enable"] = "true"
+        props["mail.smtp.host"] = "smtp.gmail.com"
+        props["mail.smtp.port"] = "587"
+
+        val session = Session.getInstance(props,
+            object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(
+                        "sihatiAlgeria@gmail.com",
+                        "pL8H45BzkXNo")
+                }
+            }
         )
-        mail.execute()
+        try {
+            val message:Message = MimeMessage(session)
+            message.setFrom(InternetAddress("sihatiAlgeria@gmail.com"))
+            message.setRecipient(Message.RecipientType.TO,
+                InternetAddress("houssembababendermel@gmail.com"))
+            message.subject = "testing sending the email"
+            message.setText("this is a test from me to me")
+            Transport.send(message)
+            Log.d("mail","email has been sent")
+        }catch (e:MessagingException){
+            throw RuntimeException(e)
+        }
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+//        val username ="sihatiAlgeria@gmail.com"
+//        val password="pL8H45BzkXNo"
+//        val messageToSend = "houssembababendermel@gmail.com"
+//        val mail = SendMail(
+//            username,
+//            password,
+//            messageToSend,
+//            "Testing Email Sending",
+//            "Yes, it's working well\nI will use it always."
+//        )
+//        mail.execute()
     }
 
     fun deleteTestsWithScheduleID(id: String) {
