@@ -151,6 +151,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                     schedule_id=test.schedule_id)
 
                 testViewModel.updateTest(oldTest,newTest)
+                    testViewModel.updateUser(test.user_id!!,"Pending")
             }
             .setNegativeButton("non", null).show()
 

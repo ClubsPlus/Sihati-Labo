@@ -218,7 +218,7 @@ class TestRepository {
             ).also {
                 sendNotification(it)
             }
-            sendEmail(activity)
+            sendEmail()
             dialog_set_result.dismiss()
         }
 
@@ -247,14 +247,7 @@ class TestRepository {
         }
     }
 
-    private fun sendEmail(context: Activity) = CoroutineScope(Dispatchers.IO).launch {
-//        val javaMailAPI = MailAPI(context,
-//            "houssembababendermel@gmail.com",
-//            "test",
-//            "you are positive")
-//
-//        javaMailAPI.execute()
-
+    private fun sendEmail() = CoroutineScope(Dispatchers.IO).launch {
         val props = Properties()
         props["mail.smtp.auth"] = "true"
         props["mail.smtp.starttls.enable"] = "true"
@@ -284,18 +277,6 @@ class TestRepository {
         }
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
-
-//        val username ="sihatiAlgeria@gmail.com"
-//        val password="pL8H45BzkXNo"
-//        val messageToSend = "houssembababendermel@gmail.com"
-//        val mail = SendMail(
-//            username,
-//            password,
-//            messageToSend,
-//            "Testing Email Sending",
-//            "Yes, it's working well\nI will use it always."
-//        )
-//        mail.execute()
     }
 
     fun deleteTestsWithScheduleID(id: String) {

@@ -1,7 +1,6 @@
 package com.example.sihati_labo.pages.createSchedulePage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
@@ -18,7 +17,7 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateScheduleBinding
 
-    private lateinit var date: String
+    private var date: String = ""
     private lateinit var dateEdit: String
     private lateinit var startTime: String
     private lateinit var endTime: String
