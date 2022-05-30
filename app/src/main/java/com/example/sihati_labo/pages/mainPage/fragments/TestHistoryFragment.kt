@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sihati_labo.R
 import com.example.sihati_labo.adapters.TestAdapter
 import com.example.sihati_labo.databinding.FragmentTestHistoryBinding
+import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
 
 class TestHistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentTestHistoryBinding
+    private lateinit var authViewModel: AuthViewModel
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var testViewModel: TestViewModel
     private lateinit var testAdapter :TestAdapter
@@ -32,6 +34,10 @@ class TestHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        authViewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[AuthViewModel::class.java]
+
         scheduleViewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[ScheduleViewModel::class.java]
@@ -43,6 +49,10 @@ class TestHistoryFragment : Fragment() {
         testViewModel.init()
 
         recyclerViewSetup()
+
+        binding.logout.setOnClickListener {
+            authViewModel.signOut(requireActivity())
+        }
     }
 
     private fun recyclerViewSetup() {
