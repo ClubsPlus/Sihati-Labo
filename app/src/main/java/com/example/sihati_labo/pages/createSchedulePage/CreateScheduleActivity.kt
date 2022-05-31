@@ -12,6 +12,9 @@ import com.example.sihati_labo.databinding.ActivityCreateScheduleBinding
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.shrikanthravi.collapsiblecalendarview.data.Day
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class CreateScheduleActivity : AppCompatActivity() {
 
@@ -67,6 +70,11 @@ class CreateScheduleActivity : AppCompatActivity() {
         binding.rollback.setOnClickListener { finish() }
 
         setCalendar(binding.calander)
+
+        val currentDate= LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val today = currentDate.format(formatter)
+
         binding.add.setOnClickListener {
             if (date.isNotEmpty()
                 &&getsTime(binding.startTime).isNotEmpty()
@@ -75,34 +83,38 @@ class CreateScheduleActivity : AppCompatActivity() {
                 startTime = getsTime(binding.startTime)
                 endTime = getsTime(binding.endTime)
                 if(checkTime(startTime,endTime)){
-                    if(edit==false){
-                        viewModel.saveSchedule(Schedule(date=date
-                            ,laboratory_id=viewModel.auth.uid
-                            ,limite=binding.max.text.toString().toInt()
-                            ,time_Start=getsTime(binding.startTime)
-                            ,time_end=getsTime(binding.endTime)),this)
+                    if(!LocalDate.parse(date, formatter).isBefore(LocalDate.parse(today, formatter))){
+                        if(!edit){
+                            viewModel.saveSchedule(Schedule(date=date
+                                ,laboratory_id=viewModel.auth.uid
+                                ,limite=binding.max.text.toString().toInt()
+                                ,time_Start=getsTime(binding.startTime)
+                                ,time_end=getsTime(binding.endTime)),this)
+                        }else{
+                            val oldSchedule = Schedule(id=intent.getStringExtra("id")
+                                ,date=dateEdit
+                                ,laboratory_id=intent.getStringExtra("laboratory_id")
+                                ,limite=intent.getStringExtra("limite")!!.toInt()
+                                ,person=intent.getStringExtra("person")!!.toInt()
+                                ,time_Start=intent.getStringExtra("time_Start")
+                                ,time_end=intent.getStringExtra("time_end"))
+
+                            val newSchedule = Schedule(id=intent.getStringExtra("id")
+                                ,date=date
+                                ,laboratory_id=intent.getStringExtra("laboratory_id")
+                                ,limite=binding.max.text.toString().toInt()
+                                ,time_Start=getsTime(binding.startTime)
+                                ,time_end=getsTime(binding.endTime))
+
+                            viewModel.editSchedule(oldSchedule,newSchedule,this)
+                            viewModel.sendNotificationToUserWithSChedule(newSchedule,
+                                "modification"
+                                ,"Votre rendez-vous a ete modifier")
+                        }
+                        finish()
                     }else{
-                        val oldSchedule = Schedule(id=intent.getStringExtra("id")
-                            ,date=dateEdit
-                            ,laboratory_id=intent.getStringExtra("laboratory_id")
-                            ,limite=intent.getStringExtra("limite")!!.toInt()
-                            ,person=intent.getStringExtra("person")!!.toInt()
-                            ,time_Start=intent.getStringExtra("time_Start")
-                            ,time_end=intent.getStringExtra("time_end"))
-
-                        val newSchedule = Schedule(id=intent.getStringExtra("id")
-                            ,date=date
-                            ,laboratory_id=intent.getStringExtra("laboratory_id")
-                            ,limite=binding.max.text.toString().toInt()
-                            ,time_Start=getsTime(binding.startTime)
-                            ,time_end=getsTime(binding.endTime))
-
-                        viewModel.editSchedule(oldSchedule,newSchedule,this)
-                        viewModel.sendNotificationToUserWithSChedule(newSchedule,
-                            "modification"
-                            ,"Votre rendez-vous a ete modifier")
+                        Toast.makeText(this,"please insert date before today",Toast.LENGTH_LONG).show()
                     }
-                    finish()
                 }else Toast.makeText(this,"please set the end time after the start time",Toast.LENGTH_SHORT).show()
             }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()
         }
