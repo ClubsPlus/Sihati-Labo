@@ -1,10 +1,10 @@
 package com.example.sihati_labo.pages.mainPage.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +36,7 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         return binding.root
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -133,7 +134,6 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.TaskClickInterface {
         intent.putExtra("person",schedule.person.toString())
         intent.putExtra("time_Start",schedule.time_Start)
         intent.putExtra("time_end",schedule.time_end)
-        Log.d("test",schedule.date.toString())
         requireActivity().startActivity(intent)
     }
 }

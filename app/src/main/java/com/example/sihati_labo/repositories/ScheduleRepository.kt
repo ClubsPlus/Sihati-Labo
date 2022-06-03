@@ -82,32 +82,6 @@ class ScheduleRepository {
             }
     }
 
-    fun updateSchedule(schedule: Schedule, newSchedule: Schedule) = CoroutineScope(Dispatchers.IO).launch {
-        val scheduleQuery = schedulesCollectionRef
-            .whereEqualTo("date",schedule.date)
-            .whereEqualTo("laboratory_id",schedule.laboratory_id)
-            .whereEqualTo("limite",schedule.limite)
-            .whereEqualTo("person",schedule.person)
-            .whereEqualTo("time_Start",schedule.time_Start)
-            .whereEqualTo("time_end",schedule.time_end)
-            .get()
-            .await()
-        if(scheduleQuery.documents.isNotEmpty()){
-            for(document in scheduleQuery){
-                try {
-                    schedulesCollectionRef.document(document.id).set(
-                        newSchedule,
-                        SetOptions.merge()
-                    ).await()
-                }catch (e:Exception){
-                    Log.d("exeptions","error: "+e.message.toString())
-                }
-            }
-        }else{
-            Log.d("exeptions","error: the retrieving query is empty")
-        }
-    }
-
     fun saveSchedule(schedule: Schedule,activity: Activity) = CoroutineScope(Dispatchers.IO).launch{
         try{
             schedulesCollectionRef.add(schedule).addOnSuccessListener {
@@ -118,12 +92,10 @@ class ScheduleRepository {
                 )
             }
             withContext(Dispatchers.Main){
-                Toast.makeText(activity,"successfully saved data", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,"données enregistrées avec succès", Toast.LENGTH_LONG).show()
             }
         }catch (e: Exception){
-            withContext(Dispatchers.Main) {
-                Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
-            }
+            Log.d("exeptions","error: "+e.message.toString())
         }
     }
 

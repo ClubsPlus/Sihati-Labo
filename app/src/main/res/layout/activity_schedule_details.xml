@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/back_round_grey"
-            android:text="Edit"
+            android:text="Modifier"
             android:textAllCaps="false"
             android:textStyle="bold" />
 
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/back_round_grey"
-            android:text="Delete"
+            android:text="Supprimer"
             android:textAllCaps="false"
             android:textStyle="bold" />
 

@@ -32,11 +32,11 @@
             android:id="@+id/person_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:maxLines="1"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -48,9 +48,9 @@
 
     <Button
         android:id="@+id/done"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="testé"
         android:backgroundTint="#FF646CA5"
         app:layout_constraintBottom_toBottomOf="@id/name_layout"
         app:layout_constraintTop_toTopOf="@id/name_layout"

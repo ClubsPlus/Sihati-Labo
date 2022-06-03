@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +15,6 @@ import com.example.sihati_labo.databinding.ActivityScheduleDetailsBinding
 import com.example.sihati_labo.pages.createSchedulePage.CreateScheduleActivity
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
-import com.google.firebase.messaging.FirebaseMessaging
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -59,7 +55,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
             val time_end = intent.getStringExtra("time_end")
 
             binding.date.text = date
-            binding.time.text = time_Start + " - " + time_end
+            binding.time.text = "$time_Start - $time_end"
 
 
             // setup the viewModel
@@ -84,7 +80,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
                         testViewModel.deleteTestsWithScheduleID(schedule.id!!)
                         scheduleViewModel.deleteSchedule(schedule)
                         scheduleViewModel.sendNotificationToUserWithSChedule(schedule,
-                            "anulation"
+                            "annulation"
                         ,"Votre rendez-vous est annuler")
                         finish()
                     }
@@ -122,7 +118,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
         testViewModel.getTestsWithScheduleId(id)
         testViewModel.testsWithId?.observe(this){ list ->
             list?.let {
-                binding.person.text = "Il reste "+ it.size +" patient a tester"
+                binding.person.text = "Il reste ${it.size} patient a tester"
                 // on below line we are updating our list.
                 notTestedAdapter.updateList(it)
             }
@@ -132,7 +128,7 @@ class ScheduleDetailsActivity : AppCompatActivity(), NotTestedAdapter.SetOnClick
     override fun onClick(test: Test) {
         AlertDialog.Builder(this)
             .setTitle("fait")
-            .setMessage("le test st vraiment fait?")
+            .setMessage("le test est vraiment fait?")
             .setPositiveButton("oui"
             ) { _, _ ->
                 val oldTest = Test(laboratory_id=test.laboratory_id,

@@ -42,8 +42,8 @@ class CreateScheduleActivity : AppCompatActivity() {
             intent.getStringExtra("time_Start")!=null&&
             intent.getStringExtra("time_end")!=null){
 
-            binding.title.text = "Edit Appointment"
-            binding.add.text = "Edit"
+            binding.title.text = "Modifier le rendez-vous"
+            binding.add.text = "Modifier"
 
             edit = true
 
@@ -109,14 +109,14 @@ class CreateScheduleActivity : AppCompatActivity() {
                             viewModel.editSchedule(oldSchedule,newSchedule,this)
                             viewModel.sendNotificationToUserWithSChedule(newSchedule,
                                 "modification"
-                                ,"Votre rendez-vous a ete modifier")
+                                ,"Votre rendez-vous a ete modifié")
                         }
                         finish()
                     }else{
-                        Toast.makeText(this,"please insert date before today",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this,"veuillez insérer une date antérieure à aujourd'hui",Toast.LENGTH_LONG).show()
                     }
-                }else Toast.makeText(this,"please set the end time after the start time",Toast.LENGTH_SHORT).show()
-            }else Toast.makeText(this,"Please fill all the fields",Toast.LENGTH_SHORT).show()
+                }else Toast.makeText(this,"veuillez régler l'heure de fin après l'heure de début",Toast.LENGTH_SHORT).show()
+            }else Toast.makeText(this,"remplissez vos champs svp",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -142,7 +142,6 @@ class CreateScheduleActivity : AppCompatActivity() {
                 val thismonth= if(day.month + 1<10) "0"+(day.month+1).toString() else (day.month + 1).toString()
 
                 date=thistoday+"/"+thismonth+"/"+day.year
-                Toast.makeText(this@CreateScheduleActivity,date,Toast.LENGTH_SHORT).show()
             }
 
             override fun onItemClick(v: View) {

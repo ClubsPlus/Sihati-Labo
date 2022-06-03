@@ -33,10 +33,6 @@ class ScheduleViewModel : ViewModel() {
         mRepository.getScheduleByIdAndSet(uid,date,time)
     }
 
-    fun updateSchedule(schedule: Schedule, newSchedule: Schedule){
-        mRepository.updateSchedule(schedule,newSchedule)
-    }
-
     fun getUserByIdAndSet(uid: String,name: TextView){
         mRepository.getUserByIdAndSet(uid,name)
     }

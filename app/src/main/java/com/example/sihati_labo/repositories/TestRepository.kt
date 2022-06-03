@@ -90,28 +90,6 @@ class TestRepository {
         }
     }
 
-    fun getTestsWithDate(date: String) {
-        val list = ArrayList<Test>()
-        testCollectionRef.whereEqualTo("date", date)
-            .orderBy("time_Start", Query.Direction.ASCENDING)
-            .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, firebaseFirestoreException ->
-                tests.value = emptyList()
-                list.clear()
-                firebaseFirestoreException?.let {
-                    Log.d("exeptions", "error: " + it.message.toString())
-                    return@addSnapshotListener
-                }
-                snapshot?.let {
-                    tests.value = emptyList()
-                    for (document in it) {
-                        if (document.toObject<Test>().result == "Positive" || document.toObject<Test>().result == "Negative")
-                            list.add(document.toObject())
-                    }
-                    tests.value = list
-                }
-            }
-    }
-
     fun getTestsWithScheduleId(id: String) {
         val list = ArrayList<Test>()
         testCollectionRef

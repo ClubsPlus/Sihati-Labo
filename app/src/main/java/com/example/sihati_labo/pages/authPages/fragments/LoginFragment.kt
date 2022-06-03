@@ -53,18 +53,16 @@ class LoginFragment : Fragment() {
         }
 
         progressDialog = ProgressDialog(requireContext())
-        progressDialog.setTitle("Please wait...")
+        progressDialog.setTitle("attendez, S'il vous plaît...")
         progressDialog.setCanceledOnTouchOutside(false)
 
-//        binding.forgetPassword.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SignUpActivity::class.java))
-//        }
+
 
         binding.login.setOnClickListener {
             if(binding.email.text.toString().isNotEmpty()
                 &&binding.password.text.toString().isNotEmpty()){
                 viewModel.signIn(binding.email.text.toString().trim(),binding.password.text.toString(),requireActivity())
-            }else Toast.makeText(requireActivity(),"please fill your email and password",Toast.LENGTH_LONG).show()
+            }else Toast.makeText(requireActivity(),"s'il vous plaît renseignez votre email et votre mot de passe",Toast.LENGTH_LONG).show()
         }
 
         binding.forgetPassword.setOnClickListener {
@@ -79,10 +77,10 @@ class LoginFragment : Fragment() {
             email = view.findViewById<TextInputEditText>(R.id.email).text.toString().trim()
 
             if(email.isEmpty()){
-                Toast.makeText(requireContext(),"Enter email...",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Entrez un e-mail...",Toast.LENGTH_LONG).show()
             }
             else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                Toast.makeText(requireContext(),"Invalid email pattern...",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Modèle d'e-mail invalide...",Toast.LENGTH_LONG).show()
             }
             else{
                 recoverPassword(dialog)
@@ -92,40 +90,18 @@ class LoginFragment : Fragment() {
         dialog.show()
     }
 
-    @SuppressLint("InflateParams")
-    private fun setupCodeDialog(){
-        val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
-        val view = layoutInflater.inflate(R.layout.code_bottom_sheet_content, null)
-        view.findViewById<Button>(R.id.send).setOnClickListener {
-            setupPassWordDialog()
-            dialog.dismiss()
-        }
-        dialog.setContentView(view)
-        dialog.show()
-    }
-
-    private fun setupPassWordDialog(){
-        val dialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogTheme)
-        val view = layoutInflater.inflate(R.layout.password_bottom_sheet_content, null)
-        view.findViewById<Button>(R.id.send).setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.setContentView(view)
-        dialog.show()
-    }
-
     private fun recoverPassword(dialog: BottomSheetDialog) {
-        progressDialog.setMessage("Sending password reset instruction to $email")
+        progressDialog.setMessage("Envoi de l'instruction de réinitialisation du mot de passe à $email")
         progressDialog.show()
         firebaseAuth.sendPasswordResetEmail(email)
             .addOnSuccessListener {
                 progressDialog.dismiss()
-                Toast.makeText(requireContext(),"Instructions send to \n$email",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Instructions envoyées à \n$email",Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }
             .addOnFailureListener { e->
                 progressDialog.dismiss()
-                Toast.makeText(requireContext(),"Failed to send due to ${e.message}",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Échec de l'envoi en raison de ${e.message}",Toast.LENGTH_LONG).show()
             }
 
     }

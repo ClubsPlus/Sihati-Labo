@@ -52,7 +52,7 @@ class SignUpFragment : Fragment() {
                     binding.name.text.toString(),
                     binding.number.text.toString(),
                     requireActivity())
-            }else   Toast.makeText(requireActivity(),"fill your fields plz",Toast.LENGTH_SHORT).show()
+            }else   Toast.makeText(requireActivity(),"remplissez vos champs s'il vous plaît",Toast.LENGTH_SHORT).show()
         }
     }
 }

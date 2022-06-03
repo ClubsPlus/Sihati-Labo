@@ -9,11 +9,11 @@
     <color name="white">#FFFFFFFF</color>
 
     /*palete*/
-    <color name="blue">#313552</color>
+    <color name="blue">#011627</color>
     <color name="red">#B8405E</color>
     <color name="green">#2EB086</color>
     <color name="beige">#EEE6CE</color>
     <color name="yellow">#BBBA12</color>
-    <color name="background">#F5F5F5</color>
+    <color name="background">#F7FEFF</color>
     <color name="pink">#f96060</color>
 </resources>

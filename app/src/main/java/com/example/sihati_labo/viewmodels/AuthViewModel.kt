@@ -12,8 +12,6 @@ import com.google.firebase.auth.FirebaseUser
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: AuthenticationRepository = AuthenticationRepository(application)
     val userData: MutableLiveData<FirebaseUser?> = repository.firebaseUserMutableLiveData
-    var users: MutableLiveData<List<User>>? = repository.users
-
 
     fun register(email: String?, pass: String?,adresse: String,name: String,number: String,activity: Activity) {
         repository.register(email, pass,adresse,name,number,activity)
@@ -25,9 +23,5 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun signOut(requireActivity: Activity) {
         repository.signOut(requireActivity)
-    }
-
-    fun getTokenWithID(id:String): String{
-        return repository.getTokenWithID(id)
     }
 }

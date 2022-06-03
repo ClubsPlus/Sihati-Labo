@@ -17,10 +17,6 @@ class TestViewModel : ViewModel() {
         pendingTests = mRepository.pendingTests
     }
 
-    fun getTestsWithDate(date:String){
-        mRepository.getTestsWithDate(date)
-    }
-
     fun getTestsWithScheduleId(id:String){
         mRepository.getTestsWithScheduleId(id)
         testsWithId = mRepository.testsWithId

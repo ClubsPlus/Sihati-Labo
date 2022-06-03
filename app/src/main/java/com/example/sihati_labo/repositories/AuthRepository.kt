@@ -74,14 +74,12 @@ class AuthenticationRepository(private val application: Application) {
         try{
             laboratoryCollectionRef.document(uid).set(laboratory).await()
             withContext(Dispatchers.Main){
-                Toast.makeText(activity,"account created seccesufy",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,"compte créé avec succès",Toast.LENGTH_LONG).show()
                 val mainActivity = MainActivity()
                 activity.startActivity(Intent(activity,mainActivity::class.java))
             }
         }catch (e: Exception){
-            withContext(Dispatchers.Main) {
-                Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
-            }
+            Log.d("exeptions","error: "+e.message.toString())
         }
     }
 
@@ -110,7 +108,7 @@ class AuthenticationRepository(private val application: Application) {
             }
             if(succes==0){
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(activity, "email or password is not correct", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "l'email ou le mot de passe n'est pas correct", Toast.LENGTH_LONG).show()
                     signOut(activity)
                 }
             }
@@ -123,21 +121,5 @@ class AuthenticationRepository(private val application: Application) {
     fun signOut(requireActivity: Activity) {
         auth.signOut()
         requireActivity.startActivity(Intent(requireActivity,AuthActivity::class.java))
-    }
-
-    fun getTokenWithID(id:String): String{
-        var token = ""
-        userCollectionRef.document(id).get()
-            .addOnSuccessListener { document ->
-            if (document != null) {
-                token = document.toObject<User>()!!.token.toString()
-            } else {
-                Log.d("exeptions", "No such document")
-            }
-        }
-        .addOnFailureListener { exception ->
-            Log.d("exeptions", "get failed with ", exception)
-        }
-        return token
     }
 }

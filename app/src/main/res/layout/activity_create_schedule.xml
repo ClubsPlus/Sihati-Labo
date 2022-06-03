@@ -35,7 +35,7 @@
             android:layout_marginEnd="34dp"
             android:layout_marginRight="34dp"
             android:gravity="center"
-            android:text="New Appointment"
+            android:text="Nouveau rendez-vous"
             android:textColor="@color/white"
             android:textSize="23sp"
             android:textStyle="bold" />
@@ -61,13 +61,15 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="à partir de :"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/startTime"
         app:layout_constraintEnd_toStartOf="@+id/startTime"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/startTime"
-        app:layout_constraintBottom_toBottomOf="@+id/startTime"
-        android:text="Starting at :"
-        android:textSize="20dp"
-        android:gravity="center"/>
+        app:layout_constraintVertical_bias="0.502" />
 
     <TimePicker
         android:id="@+id/startTime"
@@ -85,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/endTime"
         app:layout_constraintBottom_toBottomOf="@+id/endTime"
-        android:text="end at :"
+        android:text="jusqu'à :"
         android:textSize="20dp"
         android:gravity="center"/>
 
@@ -104,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/endTime"
-        android:hint="Max"
+        android:hint="Maximum"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginHorizontal="40dp">
 
@@ -130,7 +132,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/back_round_red"
-        android:text="Create"
+        android:text="Créer"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp" />

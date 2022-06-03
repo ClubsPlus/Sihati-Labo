@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forget Password"
+        android:text="Mot de passe oublié"
         android:textSize="27sp"
         android:textColor="@color/black"
         android:layout_marginStart="25dp"
@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter your email for the verification proccess we will send 4 digits code to your email."
+        android:text="Entrez votre e-mail pour le processus de vérification, nous vous enverrons un code à 4 chiffres sur votre e-mail."
         android:textSize="18sp"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="5dp"/>
@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email Address"
+        android:text="Adresse e-mail"
         android:textSize="18sp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="30dp"/>
@@ -55,7 +55,7 @@
         android:layout_marginBottom="35dp"
         android:backgroundTint="@color/blue"
         android:paddingVertical="10dp"
-        android:text="Send"
+        android:text="Envoyer"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
