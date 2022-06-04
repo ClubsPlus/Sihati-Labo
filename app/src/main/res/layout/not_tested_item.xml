@@ -51,7 +51,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="testé"
-        android:backgroundTint="#FF646CA5"
         app:layout_constraintBottom_toBottomOf="@id/name_layout"
         app:layout_constraintTop_toTopOf="@id/name_layout"
         app:layout_constraintEnd_toEndOf="parent"
