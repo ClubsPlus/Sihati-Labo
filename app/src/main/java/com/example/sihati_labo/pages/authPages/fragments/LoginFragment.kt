@@ -46,12 +46,6 @@ class LoginFragment : Fragment() {
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[AuthViewModel::class.java]
 
-        viewModel.userData.observe(requireActivity()) { firebaseUser ->
-            if (firebaseUser != null) {
-                startActivity(Intent(requireActivity(), MainActivity::class.java))
-            }
-        }
-
         progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("attendez, S'il vous plaît...")
         progressDialog.setCanceledOnTouchOutside(false)

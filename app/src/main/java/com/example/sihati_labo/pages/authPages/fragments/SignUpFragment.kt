@@ -34,12 +34,6 @@ class SignUpFragment : Fragment() {
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[AuthViewModel::class.java]
 
-        viewModel.userData.observe(requireActivity()) { firebaseUser ->
-            if (firebaseUser != null) {
-                startActivity(Intent(requireActivity(), MainActivity::class.java))
-            }
-        }
-
         binding.signup.setOnClickListener {
             if(binding.name.text.toString().isNotEmpty()
                 &&binding.number.text.toString().isNotEmpty()
