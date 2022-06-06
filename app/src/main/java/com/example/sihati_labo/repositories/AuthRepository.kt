@@ -75,8 +75,7 @@ class AuthenticationRepository(private val application: Application) {
             laboratoryCollectionRef.document(uid).set(laboratory).await()
             withContext(Dispatchers.Main){
                 Toast.makeText(activity,"compte créé avec succès",Toast.LENGTH_LONG).show()
-                val mainActivity = MainActivity()
-                activity.startActivity(Intent(activity,mainActivity::class.java))
+                activity.startActivity(Intent(activity,MainActivity()::class.java))
             }
         }catch (e: Exception){
             Log.d("exeptions","error: "+e.message.toString())
@@ -103,6 +102,10 @@ class AuthenticationRepository(private val application: Application) {
                 if(document.id==user.uid){
                     succes = 1
                     firebaseUserMutableLiveData.postValue(auth.currentUser)
+                    withContext(Dispatchers.Main){
+                        activity.startActivity(Intent(activity,MainActivity()::class.java))
+                        activity.finish()
+                    }
                     break
                 }
             }
