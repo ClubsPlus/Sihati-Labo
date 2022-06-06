@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sihati_labo.Database.Test
 import com.example.sihati_labo.adapters.TestAdapter
 import com.example.sihati_labo.databinding.FragmentTestHistoryBinding
 import com.example.sihati_labo.viewmodels.AuthViewModel
 import com.example.sihati_labo.viewmodels.ScheduleViewModel
 import com.example.sihati_labo.viewmodels.TestViewModel
 
-class TestHistoryFragment : Fragment() {
+class TestHistoryFragment : Fragment(), TestAdapter.SetOnClickInterface {
 
     private lateinit var binding: FragmentTestHistoryBinding
     private lateinit var authViewModel: AuthViewModel
@@ -59,7 +60,7 @@ class TestHistoryFragment : Fragment() {
         // manager to our recycler view.
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         // on below line we are initializing our adapter class.
-        testAdapter = TestAdapter(requireActivity(),scheduleViewModel)
+        testAdapter = TestAdapter(requireActivity(),scheduleViewModel,this)
 
         // on below line we are setting
         // adapter to our recycler view.
@@ -73,5 +74,9 @@ class TestHistoryFragment : Fragment() {
             }
 
         }
+    }
+
+    override fun onClick(test: Test) {
+        testViewModel.sendNotificationToUserWithID(test,requireActivity(),true)
     }
 }

@@ -15,7 +15,7 @@ import com.example.sihati_labo.viewmodels.ScheduleViewModel
 class PendingAdapter(
     val context: Context,
     private val viewModel: ScheduleViewModel,
-    private val setOnClickInterface: PendingAdapter.SetOnClickInterface,
+    private val setOnClickInterface: SetOnClickInterface,
 ) : RecyclerView.Adapter<PendingAdapter.PendingViewHolder>() {
 
     // on below line we are creating a

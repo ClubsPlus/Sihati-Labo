@@ -85,6 +85,6 @@ class PendingTestsFragment : Fragment(), PendingAdapter.SetOnClickInterface {
     }
 
     override fun onClick(test: Test) {
-        testViewModel.sendNotificationToUserWithID(test,requireActivity())
+        testViewModel.sendNotificationToUserWithID(test,requireActivity(),false)
     }
 }

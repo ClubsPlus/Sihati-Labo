@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sihati_labo.Database.Schedule
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.ktx.toObject
 class TestAdapter(
     val context: Context,
     private val viewModel: ScheduleViewModel,
+    private val setOnClickInterface: SetOnClickInterface,
 ) : RecyclerView.Adapter<TestAdapter.TestViewHolder>() {
 
     // on below line we are creating a
@@ -51,6 +53,10 @@ class TestAdapter(
             "Pending" -> Glide.with(context).load(R.drawable.logo_yellow).into(holder.result)
             "Not Tested" -> Glide.with(context).load(R.drawable.logo_grey).into(holder.result)
         }
+
+        holder.container.setOnClickListener {
+            setOnClickInterface.onClick(allTests[position])
+        }
     }
 
     override fun getItemCount() = allTests.size
@@ -75,5 +81,12 @@ class TestAdapter(
         val date : TextView = itemView.findViewById(R.id.date)
         val time : TextView = itemView.findViewById(R.id.time)
         val result : ImageView = itemView.findViewById(R.id.result_img)
+        var container : ConstraintLayout = itemView.findViewById(R.id.container)
+    }
+
+    interface SetOnClickInterface {
+        // creating a method for click action
+        // on recycler view item for updating it.
+        fun onClick(test: Test)
     }
 }

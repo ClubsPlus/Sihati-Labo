@@ -1,9 +1,11 @@
 package com.example.sihati_labo.repositories
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.os.StrictMode
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
@@ -158,11 +160,11 @@ class TestRepository {
         }
     }
 
-    fun sendNotificationToUserWithID(test: Test,activity: Activity){
+    fun sendNotificationToUserWithID(test: Test, activity: Activity, edit: Boolean){
         FirebaseFirestore.getInstance().collection("User").document(test.user_id!!).get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    setupDialog(test,document.toObject<User>()!!.token.toString(),activity)
+                    setupDialog(test,document.toObject<User>()!!.token.toString(),activity,edit)
                 } else {
                     Log.d("exeptions", "No such document")
                 }
@@ -172,7 +174,8 @@ class TestRepository {
             }
     }
 
-    private fun setupDialog(test: Test,token: String,activity: Activity){
+    @SuppressLint("SetTextI18n")
+    private fun setupDialog(test: Test, token: String, activity: Activity, edit: Boolean){
         val dialog_set_result = Dialog(activity)
         dialog_set_result.setContentView(R.layout.set_result_dialog)
         dialog_set_result.window?.setBackgroundDrawable(
@@ -185,16 +188,33 @@ class TestRepository {
         val positive = dialog_set_result.findViewById<AppCompatButton>(R.id.positive)
         val negative = dialog_set_result.findViewById<AppCompatButton>(R.id.negative)
 
+        if(edit){
+            dialog_set_result.findViewById<TextView>(R.id.text).text = "Modifier le resultat de ce patient"
+        }
+
         positive.setOnClickListener {
             val oldTest = Test(test.date_end,test.laboratory_id,test.result,test.user_id,test.schedule_id)
             val newTest = Test(test.date_end,test.laboratory_id,"Positive",test.user_id,test.schedule_id)
             updateTest(oldTest,newTest)
             updateUser(test.user_id!!,"Positive")
-            PushNotification(
-                NotificationData("Resultat","Votre resultat est pret"),
-                token
-            ).also {
-                sendNotification(it)
+            if(edit){
+                Log.d("test","edit")
+                PushNotification(
+                    NotificationData("Resultat","Votre resultat est modifier"),
+                    token
+                ).also {
+                    Log.d("test","notification created")
+                    sendNotification(it)
+                }
+            }else{
+                Log.d("test","not edit")
+                PushNotification(
+                    NotificationData("Resultat","Votre resultat est pret"),
+                    token
+                ).also {
+                    Log.d("test","notification created")
+                    sendNotification(it)
+                }
             }
             sendEmail()
             dialog_set_result.dismiss()
@@ -205,11 +225,24 @@ class TestRepository {
             val newTest = Test(test.date_end,test.laboratory_id,"Negative",test.user_id,test.schedule_id)
             updateTest(oldTest,newTest)
             updateUser(test.user_id!!,"Negative")
-            PushNotification(
-                NotificationData("Resultat","Votre resultat est pret"),
-                token
-            ).also {
-                sendNotification(it)
+            if(edit){
+                Log.d("test","edit")
+                PushNotification(
+                    NotificationData("Resultat","Votre resultat est modifier"),
+                    token
+                ).also {
+                    Log.d("test","notification created")
+                    sendNotification(it)
+                }
+            }else{
+                Log.d("test","not edit")
+                PushNotification(
+                    NotificationData("Resultat","Votre resultat est pret"),
+                    token
+                ).also {
+                    Log.d("test","notification created")
+                    sendNotification(it)
+                }
             }
             dialog_set_result.dismiss()
         }
@@ -220,6 +253,7 @@ class TestRepository {
     private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
         try {
             RetrofitInstance.api.postNotification(notification)
+            Log.d("test","notification sent")
         }catch (e: Exception){
             Log.d("exeptions", "error: $e")
         }
