@@ -62,6 +62,7 @@ class AuthenticationRepository(private val application: Application) {
         auth.createUserWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val uid = auth.currentUser!!.uid
+                auth.currentUser!!.sendEmailVerification()
                 saveLaboratory(Laboratory(adresse,name,number),uid,activity)
             }else{
                 Toast.makeText(application, task.exception?.message, Toast.LENGTH_SHORT)
@@ -74,9 +75,9 @@ class AuthenticationRepository(private val application: Application) {
         try{
             laboratoryCollectionRef.document(uid).set(laboratory).await()
             withContext(Dispatchers.Main){
-                Toast.makeText(activity,"compte créé avec succès",Toast.LENGTH_LONG).show()
-                activity.startActivity(Intent(activity,MainActivity()::class.java))
+                Toast.makeText(activity,"Compte créé avec succès",Toast.LENGTH_LONG).show()
             }
+            signOut(activity)
         }catch (e: Exception){
             Log.d("exeptions","error: "+e.message.toString())
         }
@@ -85,8 +86,13 @@ class AuthenticationRepository(private val application: Application) {
     fun login(email: String?, pass: String?,activity: Activity) {
         auth.signInWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->
             if (task.isSuccessful){
-                retrieveLaboratories(auth.currentUser!!,activity)
-                firebaseUserMutableLiveData.postValue(auth.currentUser)
+                if(auth.currentUser!!.isEmailVerified){
+                    retrieveLaboratories(auth.currentUser!!,activity)
+                    firebaseUserMutableLiveData.postValue(auth.currentUser)
+                }else{
+                    Toast.makeText(application, "Vérifier votre email", Toast.LENGTH_SHORT).show()
+                    signOut(activity)
+                }
             } else {
                 Toast.makeText(application, task.exception?.message  , Toast.LENGTH_SHORT)
                     .show()

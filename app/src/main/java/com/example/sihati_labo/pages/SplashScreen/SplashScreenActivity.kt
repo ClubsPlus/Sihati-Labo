@@ -30,16 +30,12 @@ class SplashScreenActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.logo_blue).into(binding.logo)
 
         Handler().postDelayed({
-            viewModel.userData.observe(this) { firebaseUser ->
-                if (firebaseUser != null) {
-                    startActivity(Intent(this, MainActivity::class.java))
-
-                }else{
-                    startActivity(Intent(this, AuthActivity::class.java))
-                }
-                finish()
+            if(viewModel.userData.value!= null){
+                startActivity(Intent(this, MainActivity::class.java))
+            }else{
+                startActivity(Intent(this, AuthActivity::class.java))
             }
-
+            finish()
         },1000)
 
     }
