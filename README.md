@@ -3,7 +3,7 @@ And android app that can be used as a covid status Sanitary Pass, it employs a c
 
 It consists of parts: User, and Laboratory, which will be synchronized with one another, each one with its own application, and this is the Laboratory side.
 
-here you will find the Client Side : https://github.com/Tweeel/Sihati-Client
+here you will find the Client Side : github.com/Tweeel/Sihati-Client
 
 While the user will receive a notification every week to take a test, the status will be changed to "Not tested" status, Then he has to take an appointment in one of the laboratories listed based on their schedule, While each laboratory can make his schedule with a limited number of people in each phase, and each time the laboratory edit or delete any schedule, all the users signed up in that schedule will receive a notification to inform them, once he makes the test, His status will be changed to "Pending" status, and when the result is ready the laboratory upload the result and the user will get a notification informing that his results are ready and the state will automatically update for the user, In case the user is positive the administration will directly receive an email that that student/teacher is contaminated and the status change to "Positive" with the number of quarantine days required. 
 Assuredly. 
