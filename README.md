@@ -43,4 +43,5 @@ ViewBinding<br>
 
 # Images
 <img width="1622" alt="auth" src="https://user-images.githubusercontent.com/75279465/174917249-5c6696a5-8281-4876-8257-6a3ddeb2fbd8.png">
-<img width="3236" alt="laboall" src="https://user-images.githubusercontent.com/75279465/174917261-860e1ce1-39ce-4acf-b37d-88133d8ec018.png">
+<img width="1614" alt="labo1" src="https://user-images.githubusercontent.com/75279465/174917520-1a76b029-87b7-4ef6-aee8-f2ec9e8ed47f.png">
+<img width="1616" alt="labo2" src="https://user-images.githubusercontent.com/75279465/174917537-c9c23d41-bde4-4593-bead-cb0151266d6e.png">
