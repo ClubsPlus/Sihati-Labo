@@ -10,6 +10,7 @@ Assuredly.
 
 # APK
 <a href="[url](https://drive.google.com/file/d/1npgGt0liFuW2nxsP-VqRkiFClRKIz_fL/view?usp=sharing)">Click here.</a>
+<a href="https://www.google.com/">Link to google</a>
 
 # The Main Functions Are To Be Realized By The Actor
 1- User<br>
