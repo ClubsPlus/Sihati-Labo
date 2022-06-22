@@ -39,6 +39,9 @@ Kotlin<br>
 FireBase<br>
 MVVM design pattern<br>
 RetroFit<br>
+NotificationAPI<br>
+Services<br>
+JavaMail<br>
 Corountine<br>
 LiveData<br>
 ViewBinding<br>
