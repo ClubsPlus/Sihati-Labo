@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".pages.authPages.fragments.LoginFragment"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
