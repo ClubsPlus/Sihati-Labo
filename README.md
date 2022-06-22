@@ -1,5 +1,5 @@
 # Sihati-Labo
-And android app that can be used as a covid status Sanitary Pass, it employs a color scheme to determine the health status of the user, which allows us to identify the uninfected and permits them to access the University. 
+And android app that can be used as a COVID status Sanitary Pass, it employs a color scheme to determine the health status of the user, which allows us to identify the uninfected and permits them to access the University. 
 
 It consists of parts: User, and Laboratory, which will be synchronized with one another, each one with its own application, and this is the Laboratory side.
 
